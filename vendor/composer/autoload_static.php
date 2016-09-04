@@ -15,6 +15,7 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
+            'yii\\jui\\' => 8,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
@@ -22,6 +23,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
             'yii\\codeception\\' => 16,
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
+        ),
+        'm' => 
+        array (
+            'mdm\\admin\\' => 10,
         ),
         'c' => 
         array (
@@ -37,6 +42,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         'yii\\swiftmailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer',
+        ),
+        'yii\\jui\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-jui',
         ),
         'yii\\gii\\' => 
         array (
@@ -65,6 +74,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
+        ),
+        'mdm\\admin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mdmsoft/yii2-admin',
         ),
         'cebe\\markdown\\' => 
         array (
