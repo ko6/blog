@@ -2,7 +2,8 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = isset($site_info['site_name'])?$site_info['site_name']:'My Yii Application';
+// $this->description = isset($site_info['site_name'])?$site_info['site_name']:'My Yii Application';
 ?>
 <div class="site-index">
 

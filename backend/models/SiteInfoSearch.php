@@ -18,6 +18,7 @@ class SiteInfoSearch extends SiteInfo
     public function rules()
     {
         return [
+            [['site_info_id'], 'integer'],
             [['site_name', 'site_url', 'site_keyword', 'site_descript', 'site_subtitle', 'site_bottom', 'site_logo'], 'safe'],
         ];
     }
@@ -57,6 +58,10 @@ class SiteInfoSearch extends SiteInfo
         }
 
         // grid filtering conditions
+        $query->andFilterWhere([
+            'site_info_id' => $this->site_info_id,
+        ]);
+
         $query->andFilterWhere(['like', 'site_name', $this->site_name])
             ->andFilterWhere(['like', 'site_url', $this->site_url])
             ->andFilterWhere(['like', 'site_keyword', $this->site_keyword])

@@ -9,15 +9,19 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use backend\models\SiteInfo;
 
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
+<?php $site_info = SiteInfo::get_site_info(); ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="<?= isset($site_info['site_descript'])?$site_info['site_descript']:"" ?>">
+    <meta name="keywords" content="<?= isset($site_info['site_keyword'])?$site_info['site_keyword']:"" ?>">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
@@ -70,9 +74,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <?= isset($site_info['site_bottom'])?$site_info['site_bottom']:"" ?>
     </div>
 </footer>
 

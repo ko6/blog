@@ -12,6 +12,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use backend\models\SiteInfo;
 
 /**
  * Site controller
@@ -72,7 +73,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+
+         return $this->render('index',[
+           'site_info' => SiteInfo::get_site_info(), //获取网站基本信息
+         ]);
+    }
+
+    public function actionA()
+    {
+
+var_dump($GET);
     }
 
     /**

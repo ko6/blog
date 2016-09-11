@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
+    <?= $form->field($model, 'site_info_id') ?>
+
     <?= $form->field($model, 'site_name') ?>
 
     <?= $form->field($model, 'site_url') ?>
@@ -23,7 +25,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'site_descript') ?>
 
-    <?= $form->field($model, 'site_subtitle') ?>
+    <?php // echo $form->field($model, 'site_subtitle') ?>
 
     <?php // echo $form->field($model, 'site_bottom') ?>
 

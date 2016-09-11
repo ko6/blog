@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\SiteInfo */
 
-$this->title = 'Update Site Info: ' . $model->site_name;
+$this->title = 'Update Site Info: ' . $model->site_info_id;
 $this->params['breadcrumbs'][] = ['label' => 'Site Infos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->site_name, 'url' => ['view', 'id' => $model->site_name]];
+$this->params['breadcrumbs'][] = ['label' => $model->site_info_id, 'url' => ['view', 'id' => $model->site_info_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="site-info-update">

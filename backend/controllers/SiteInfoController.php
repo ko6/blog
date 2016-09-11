@@ -10,7 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * SiteInfoController implements the CRUD actions for SiteInfo model.
+ * SiteInfoController 配置网站基础信息
+ * 默认直接编辑site_info_id = 1 的记录
+ * 若无该记录，先插入记录后再编辑
  */
 class SiteInfoController extends Controller
 {
@@ -46,7 +48,7 @@ class SiteInfoController extends Controller
 
     /**
      * Displays a single SiteInfo model.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionView($id)
@@ -66,7 +68,7 @@ class SiteInfoController extends Controller
         $model = new SiteInfo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->site_name]);
+            return $this->redirect(['view', 'id' => $model->site_info_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -77,7 +79,7 @@ class SiteInfoController extends Controller
     /**
      * Updates an existing SiteInfo model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
@@ -85,7 +87,7 @@ class SiteInfoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->site_name]);
+            return $this->redirect(['view', 'id' => $model->site_info_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -96,7 +98,7 @@ class SiteInfoController extends Controller
     /**
      * Deletes an existing SiteInfo model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -109,7 +111,7 @@ class SiteInfoController extends Controller
     /**
      * Finds the SiteInfo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
+     * @param integer $id
      * @return SiteInfo the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
