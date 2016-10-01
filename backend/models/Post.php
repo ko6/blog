@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "post".
@@ -42,24 +43,38 @@ class Post extends \yii\db\ActiveRecord
         ];
     }
 
+    /*
+    * 自动填充编辑时间
+    */
+    public function behaviors()
+    {
+         return [
+             [
+                 'class' => TimestampBehavior::className(),
+                //  'createdAtAttribute' => 'created_at',
+                 'updatedAtAttribute' => 'updated_at',
+                 'value' => new Expression('NOW()'),
+             ],
+         ];
+    }
     /**
      * @inheritdoc
      */
     public function attributeLabels()
     {
         return [
-            'post_id' => 'Post ID',
-            'post_author' => 'Post Author',
+            'post_id' => '文章id',
+            'post_author' => '作者id',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'post_title' => 'Post Title',
-            'post_category' => 'Post Category',
-            'post_excerpt' => 'Post Excerpt',
+            'post_title' => '标题',
+            'post_category' => '分类',
+            'post_excerpt' => '简介',
             'post_status' => 'Post Status',
-            'post_url_name' => 'Post Url Name',
-            'post_content' => 'Post Content',
-            'post_hits' => 'Post Hits',
-            'post_pic' => 'Post Pic',
+            'post_url_name' => 'url名称，用作个性化文章网址',
+            'post_content' => '正文',
+            'post_hits' => '点击数',
+            'post_pic' => '栏目页展示图片',
         ];
     }
 }

@@ -19,7 +19,7 @@ class SiteInfoSearch extends SiteInfo
     {
         return [
             [['site_info_id'], 'integer'],
-            [['site_name', 'site_url', 'site_keyword', 'site_descript', 'site_subtitle', 'site_bottom', 'site_logo'], 'safe'],
+            [['site_name', 'site_url', 'site_keywords', 'site_description', 'site_subtitle', 'site_bottom', 'site_logo'], 'safe'],
         ];
     }
 
@@ -64,8 +64,8 @@ class SiteInfoSearch extends SiteInfo
 
         $query->andFilterWhere(['like', 'site_name', $this->site_name])
             ->andFilterWhere(['like', 'site_url', $this->site_url])
-            ->andFilterWhere(['like', 'site_keyword', $this->site_keyword])
-            ->andFilterWhere(['like', 'site_descript', $this->site_descript])
+            ->andFilterWhere(['like', 'site_keywords', $this->site_keywords])
+            ->andFilterWhere(['like', 'site_description', $this->site_description])
             ->andFilterWhere(['like', 'site_subtitle', $this->site_subtitle])
             ->andFilterWhere(['like', 'site_bottom', $this->site_bottom])
             ->andFilterWhere(['like', 'site_logo', $this->site_logo]);

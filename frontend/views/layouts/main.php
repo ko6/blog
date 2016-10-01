@@ -14,17 +14,28 @@ use backend\models\SiteInfo;
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
-<?php $site_info = SiteInfo::get_site_info(); ?>
+<?php
+/* 设置页面seo信息 */
+/* 设置keywords description 前先检测是否已配置，因yii默认先处理活动页面，此模板中的seo配置会覆盖掉活动页面中的个性化seo设置 */
+/* 将站点标题追加到页面标题尾部 */
+$site_info = SiteInfo::get_site_info();
+
+    !isset($this->metaTags['keywords'])&&isset($site_info['site_keywords'])?$this->registerMetaTag(['name'=>"Keywords",'content'=>$site_info['site_keywords']],'keywords'):"" ;
+    !isset($this->metaTags['description'])&&isset($site_info['site_description'])?$this->registerMetaTag(['name'=>"description",'content'=>$site_info['site_description']],'description'):"" ;
+    isset($site_info['site_name'])?($this->title==""?$this->title=$site_info['site_name']:$this->title.=" - ".$site_info['site_name']):'';
+?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
+
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<?= isset($site_info['site_descript'])?$site_info['site_descript']:"" ?>">
-    <meta name="keywords" content="<?= isset($site_info['site_keyword'])?$site_info['site_keyword']:"" ?>">
     <?= Html::csrfMetaTags() ?>
+
+
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+
 </head>
 <body>
 <?php $this->beginBody() ?>

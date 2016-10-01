@@ -13,6 +13,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use backend\models\SiteInfo;
+use backend\models\Post;
 
 /**
  * Site controller
@@ -80,10 +81,25 @@ class SiteController extends Controller
          ]);
     }
 
-    public function actionA()
+    public function actionA($id)
     {
+      $post = Post::find()->where(['post_id'=>$id])->asArray()->one();
 
-var_dump($GET);
+            return $this->render('article',[
+            'post' => $post, //传递文章具体信息
+          ]);
+
+
+    }
+    public function actionC($id)
+    {
+      $post = Post::find()->where(['post_category'=>$id])->asArray()->all();
+
+            return $this->render('category',[
+            'post' => $post, //传递文章列表信息
+          ]);
+
+
     }
 
     /**

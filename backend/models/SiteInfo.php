@@ -10,8 +10,8 @@ use Yii;
  * @property integer $site_info_id
  * @property string $site_name
  * @property string $site_url
- * @property string $site_keyword
- * @property string $site_descript
+ * @property string $site_keywords
+ * @property string $site_description
  * @property string $site_subtitle
  * @property string $site_bottom
  * @property string $site_logo
@@ -35,7 +35,7 @@ class SiteInfo extends \yii\db\ActiveRecord
             [['site_info_id'], 'required'],
             [['site_info_id'], 'integer'],
             [['site_bottom'], 'string'],
-            [['site_name', 'site_url', 'site_keyword', 'site_descript', 'site_subtitle', 'site_logo'], 'string', 'max' => 255],
+            [['site_name', 'site_url', 'site_keywords', 'site_description', 'site_subtitle', 'site_logo'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,13 +46,13 @@ class SiteInfo extends \yii\db\ActiveRecord
     {
         return [
             'site_info_id' => 'Site Info ID',
-            'site_name' => 'Site Name',
-            'site_url' => 'Site Url',
-            'site_keyword' => 'Site Keyword',
-            'site_descript' => 'Site Descript',
-            'site_subtitle' => 'Site Subtitle',
-            'site_bottom' => 'Site Bottom',
-            'site_logo' => 'Site Logo',
+            'site_name' => '网站名称',
+            'site_url' => '首页地址',
+            'site_keywords' => '网站关键字',
+            'site_description' => '网站描述',
+            'site_subtitle' => '网站二级标题',
+            'site_bottom' => '网站底部显示内容(支持html)',
+            'site_logo' => '网站logo地址',
         ];
     }
 

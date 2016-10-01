@@ -42,11 +42,22 @@ class PostCategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'category_id' => 'Category ID',
-            'category_name' => 'Category Name',
-            'category_keyword' => 'Category Keyword',
-            'category_descript' => 'Category Descript',
-            'category_status' => 'Category Status',
+            'category_id' => '分类id',
+            'category_name' => '分类名称',
+            'category_keyword' => '分类seo关键字',
+            'category_descript' => '分类seo描述',
+            'category_status' => '分类状态，1：启用，0：禁用',
         ];
+    }
+    /**
+     * 返回所有启用的文章分类，格式 id=》name
+     */
+    public static function get_post_category()
+    {
+      $category_temp = PostCategory::find('category_id','category_name')->where(['category_status'=>'1'])->asArray()->all();
+      foreach ($category_temp as $key) {
+        $category[$key['category_id']]=$key['category_name'];
+      }
+      return $category;
     }
 }
