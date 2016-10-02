@@ -14,6 +14,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use backend\models\SiteInfo;
 use backend\models\Post;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -83,10 +84,21 @@ class SiteController extends Controller
 
     public function actionA($id)
     {
-      $post = Post::find()->where(['post_id'=>$id])->asArray()->one();
+      // $post = Post::find()->where(['post_id'=>$id])->asArray()->one();
+      $post = Post::findOne(['post_id'=>$id,'post_status'=>"1"]);
+      // var_dump($post);
+      if(!isset($post)){
+        echo "meiyou";
+          throw new NotFoundHttpException('The requested page does not exist.');
+      }
+
+      $post->post_hits += 1;
+      $post->save();
+
+
 
             return $this->render('article',[
-            'post' => $post, //传递文章具体信息
+            'post' => $post->attributes, //传递文章具体信息
           ]);
 
 

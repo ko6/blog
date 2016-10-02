@@ -28,6 +28,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         array (
             'mdm\\admin\\' => 10,
         ),
+        'i' => 
+        array (
+            'ijackua\\lepture\\' => 16,
+        ),
         'c' => 
         array (
             'cebe\\markdown\\' => 14,
@@ -78,6 +82,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         'mdm\\admin\\' => 
         array (
             0 => __DIR__ . '/..' . '/mdmsoft/yii2-admin',
+        ),
+        'ijackua\\lepture\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ijackua/yii2-lepture-markdown-editor-widget',
         ),
         'cebe\\markdown\\' => 
         array (

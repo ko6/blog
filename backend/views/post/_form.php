@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use backend\models\PostCategory;
+use ijackua\lepture\Markdowneditor;
+use ijackua\lepture\MarkdowneditorAssets;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Post */
@@ -14,7 +17,7 @@ use backend\models\PostCategory;
     <?php $form = ActiveForm::begin(); ?>
 
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+    <?= $form->field($model, 'created_at')->textInput(["value"=> date('Y-m-d H:i:s',$model['created_at']==""?time():$model['created_at'])]) ?>
 
 
     <?= $form->field($model, 'post_title')->textInput() ?>
@@ -27,7 +30,8 @@ use backend\models\PostCategory;
 
     <?= $form->field($model, 'post_url_name')->textInput() ?>
 
-    <?= $form->field($model, 'post_content')->textarea(['rows' => 6]) ?>
+   <?= Markdowneditor::widget(['model' => $model, 'attribute' => 'post_content']) ?>
+
 
     <?= $form->field($model, 'post_hits')->textInput() ?>
 

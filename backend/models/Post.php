@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\db\Expression;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -37,24 +38,22 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_author', 'post_title', 'post_category', 'post_url_name', 'post_content'], 'required'],
-            [['post_author', 'created_at', 'updated_at', 'post_category', 'post_status', 'post_hits'], 'integer'],
+            [['created_at', 'post_title', 'post_category', 'post_url_name', 'post_content'], 'required'],
+            [['post_author', 'updated_at', 'post_category', 'post_status', 'post_hits'], 'integer'],
             [['post_title', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic'], 'string'],
         ];
     }
 
     /*
-    * 自动填充编辑时间
+    * 自动以当前时间戳填充文章更新时间，updated_at为默认字段，不用再次指定。
     */
     public function behaviors()
     {
-         return [
-             [
-                 'class' => TimestampBehavior::className(),
-                //  'createdAtAttribute' => 'created_at',
-                 'updatedAtAttribute' => 'updated_at',
-                 'value' => new Expression('NOW()'),
-             ],
+        return [
+                   [
+                       'class' => TimestampBehavior::className(),
+                       'createdAtAttribute' => false,//不填充发布日期
+                   ],
          ];
     }
     /**
@@ -76,5 +75,22 @@ class Post extends \yii\db\ActiveRecord
             'post_hits' => '点击数',
             'post_pic' => '栏目页展示图片',
         ];
+    }
+/**
+* 保存数据前处理发布日期字段,添加作者信息
+*/
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            // 添加作者信息
+      if ($this->isNewRecord) {
+          $this->post_author = Yii::$app->user->getId();
+      }
+            // 将发布日期转换为时间戳
+            $this->created_at = strtotime($this->created_at);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

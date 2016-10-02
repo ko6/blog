@@ -7,7 +7,7 @@ $this->title = '1';
 
  $this->registerMetaTag(['name' => 'description',  'content' => 'new description'], 'description');
  $this->registerMetaTag(['name' => 'keywords',  'content' => 'new keywords'], 'keywords');
-var_dump($post);
+// var_dump($post);
 
   if (isset($post)) {
       //有相关文章信息  # code...
@@ -20,18 +20,21 @@ var_dump($post);
                 <h2 class="style"><?=$post['post_title'] ?></h2>
                 <div class="blog_list pull-left">
                     <ul class="list-unstyled">
-                        <li><i class="fa fa-calendar-o"></i><span><?=$post['updated_at'] ?></span></li>
-                        <li><a href="#"><i class="fa fa-tags"></i><span><?=$post['updated_at']?></span></a></li>
-                        <li><a href="#"><i class="fa fa-eye"></i><span><?=$post['post_hits'] ?> views</span></a></li>
+                        <li><i class="fa fa-calendar-o"></i><span><?=date("Y-m-d",$post['updated_at']) ?></span></li>
+                        <li><i class="fa fa-user"></i><span>koko</span></li>
+                        <li><a href="#"><i class="fa fa-tags"></i><span><?=$post['post_title']?></span></a></li>
                     </ul>
                 </div>
-                <div class="b_left pull-right">
-                    <a href=""><i class="fa fa-heart"></i><span> 28</span></a>
+                <div class="b_left blog_list pull-right">
+                    <ul class="list-unstyled">
+                      <li><a href="#"><i class="fa fa-eye"></i><span><?=$post['post_hits'] ?></span></a></li>
+                      <!-- <li><a href=""><i class="fa fa-heart"></i><span> 28</span></a></li> -->
+                    </ul>
                 </div>
                 <div class="clearfix"></div>
                 <div class="blog details row">
 
-                    <?=$post['post_content']?>
+                    <?=yii\helpers\Markdown::process($post['post_content'])?>
 
                 </div>
             </div>

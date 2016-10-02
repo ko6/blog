@@ -75,4 +75,13 @@ return array (
       '@mdm/admin' => $vendorDir . '/mdmsoft/yii2-admin',
     ),
   ),
+  'ijackua/yii2-lepture-markdown-editor-widget' => 
+  array (
+    'name' => 'ijackua/yii2-lepture-markdown-editor-widget',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@ijackua/lepture' => $vendorDir . '/ijackua/yii2-lepture-markdown-editor-widget',
+    ),
+  ),
 );
