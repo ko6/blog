@@ -105,7 +105,7 @@ class SiteController extends Controller
     }
     public function actionC($id)
     {
-      $post = Post::find()->where(['post_category'=>$id])->asArray()->all();
+      $post = Post::find()->where(['post_category'=>$id])->orderby("created_at desc")->asArray()->all();
 
             return $this->render('category',[
             'post' => $post, //传递文章列表信息

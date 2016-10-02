@@ -7,10 +7,10 @@ $this->title = '1';
 
  $this->registerMetaTag ( [  'name' => "description" ,  'content'=>"new description",],"description");
  $this->registerMetaTag ( [  'name' => "keywords" ,  'content'=>"new keywords",],'keywords');
-var_dump($post);
+// var_dump($post);
 
 if (isset($post)) {
-//有相关文章信息  # code...
+    //有相关文章信息  # code...
 
 ?>
 <div class="blog"><!-- start main -->
@@ -18,31 +18,39 @@ if (isset($post)) {
 		<div class="main row">
 			<div class="col-md-8 blog_left">
 				<h2 class="style">koko blog</h2>
-        <?php foreach ($post as $p ) { ?>
+        <?php foreach ($post as $p ) {
+    ?>
 
 
 				<div class="blog_main">
-					<a href="single-page.html"><img src="/images/blog_pic1.jpg" alt="" class="blog_img img-responsive"/></a>
-					<h4><a href="single-page.html"><?=$p['post_title']?></a></h4>
-						<div class="blog_list pull-left">
-							  <ul class="list-unstyled">
-								<li><i class="fa fa-calendar-o"></i><span><?=$p['created_at']?></span></li>
-								<li><a href="#"><i class="fa fa-comment"></i><span>Comments</span></a></li>
-						  		<li><i class="fa fa-user"></i><span>Admin</span></li>
-						  		<li><a href="#"><i class="fa fa-eye"></i><span><?=$p['post_hits']?> views</span></a></li>
-							  </ul>
-						</div>
-					<div class="b_left pull-right">
-						<a href=""><i class="fa fa-heart"></i><span> 28</span></a>
-					</div>
-					<div class="clearfix"></div>
-					<p class="para"><?=$p['post_excerpt']?></p>
-					<div class="read_more btm">
-            <?= Html::a('阅读全文', ['a','id'=>$p['post_id']], ['class' => 'btn btn-success']) ?>
-					</div>
+          <div class="col-md-4" style="max-height:248px;overflow:hidden;">
+            <a href="single-page.html"><img src=<?= $p['post_pic']!=""?$p['post_pic']:"/images/blog_pic1.jpg"?> alt="" class="blog_img img-responsive" style="padding:0 10px;"/></a>
+          </div>
+          <div  class="col-md-8">
+            <h4><a href="single-page.html"><?=$p['post_title']?></a></h4>
+            <div class="blog_list pull-left">
+              <ul class="list-unstyled">
+                <li><i class="fa fa-calendar-o"></i><span><?=date("Y-m-d",$p['created_at'])?></span></li>
+                <li><a href="#"><i class="fa fa-tags"></i><span><?=$p['post_hits']?></span></a></li>
+              </ul>
+            </div>
+            <div class="b_left blog_list pull-right">
+                <ul class="list-unstyled">
+                  <li><i class="fa fa-eye"></i><span><?=$p['post_hits']?></span></li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <p class="para" style="max-height:70px;overflow:hidden;"><?=$p['post_excerpt']?></p>
+            <div class="read_more btm">
+              <?= Html::a('阅读全文', ['a','id'=>$p['post_id']], ['class' => 'btn btn-success']) ?>
+            </div>
+          </div>
 				</div>
+        <div class="clearfix"></div>
+        <hr>
 
-        <?php }?>
+        <?php
+} ?>
 			</div>
 			<div class="col-md-4 blog_right">
 				<ul class="ads_nav list-unstyled">
@@ -94,7 +102,7 @@ if (isset($post)) {
 <?php
 
 } else {
-  //没找到对应的文章  # code...
+    //没找到对应的文章  # code...
 
 
 
@@ -103,6 +111,7 @@ The requested page does not exist.
 
 
 <?php
+
 }
 
  ?>
