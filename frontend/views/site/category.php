@@ -24,7 +24,7 @@ if (isset($post)) {
 
 				<div class="blog_main">
           <div class="col-md-4" style="max-height:248px;overflow:hidden;">
-            <a href="single-page.html"><img src=<?= $p['post_pic']!=""?$p['post_pic']:"/images/blog_pic1.jpg"?> alt="" class="blog_img img-responsive" style="padding:0 10px;"/></a>
+            <a href="single-page.html"><img src=<?= $p['post_pic']!=""?$p['post_pic']:"/images/blog_pic1.jpg"?> alt="" class="blog_img img-responsive" /></a>
           </div>
           <div  class="col-md-8">
             <h4><a href="single-page.html"><?=$p['post_title']?></a></h4>
@@ -42,7 +42,7 @@ if (isset($post)) {
             <div class="clearfix"></div>
             <p class="para" style="max-height:70px;overflow:hidden;"><?=$p['post_excerpt']?></p>
             <div class="read_more btm">
-              <?= Html::a('阅读全文', ['a','id'=>$p['post_id']], ['class' => 'btn btn-success']) ?>
+              <?= Html::a('阅读全文', ["a/$p[post_id]/$p[post_url_name]"], ['class' => 'btn btn-success']) ?>
             </div>
           </div>
 				</div>
