@@ -9,7 +9,8 @@ return [
         'enablePrettyUrl' => true,
         'showScriptName' => false,
         'rules' => [
-          'a/<id:.*>' => 'a/',
+          'a/<id:.*>' => 'site/a',
+          // '/<id:.*>' => 'site',
         ]
         ],
 
