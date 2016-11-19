@@ -18,8 +18,8 @@ class PostSearch extends Post
     public function rules()
     {
         return [
-            [['post_id', 'post_author', 'created_at', 'updated_at', 'post_category', 'post_status', 'post_hits'], 'integer'],
-            [['post_title', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic'], 'safe'],
+            [['post_id', 'post_author', 'created_at', 'updated_at', 'post_category', 'post_status', 'post_content_type', 'post_hits'], 'integer'],
+            [['post_title', 'post_keywords', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic'], 'safe'],
         ];
     }
 
@@ -65,10 +65,12 @@ class PostSearch extends Post
             'updated_at' => $this->updated_at,
             'post_category' => $this->post_category,
             'post_status' => $this->post_status,
+            'post_content_type' => $this->post_content_type,
             'post_hits' => $this->post_hits,
         ]);
 
         $query->andFilterWhere(['like', 'post_title', $this->post_title])
+            ->andFilterWhere(['like', 'post_keywords', $this->post_keywords])
             ->andFilterWhere(['like', 'post_excerpt', $this->post_excerpt])
             ->andFilterWhere(['like', 'post_url_name', $this->post_url_name])
             ->andFilterWhere(['like', 'post_content', $this->post_content])

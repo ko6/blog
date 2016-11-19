@@ -30,7 +30,7 @@ use ijackua\lepture\MarkdowneditorAssets;
     <?= $form->field($model, 'post_url_name')->textInput()->label("网址标题") ?>
 
 
-
+    <?= $form->field($model, 'post_keywords')->textInput(['maxlength' => true]) ?>
 
 
     <?= $form->field($model, 'post_excerpt')->textarea(['rows' => 2])->label("文章简介") ?>

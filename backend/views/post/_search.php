@@ -27,11 +27,15 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'post_category') ?>
 
+    <?php // echo $form->field($model, 'post_keywords') ?>
+
     <?php // echo $form->field($model, 'post_excerpt') ?>
 
     <?php // echo $form->field($model, 'post_status') ?>
 
     <?php // echo $form->field($model, 'post_url_name') ?>
+
+    <?php // echo $form->field($model, 'post_content_type') ?>
 
     <?php // echo $form->field($model, 'post_content') ?>
 
