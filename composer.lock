@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a0afc4b017db3ea1260db8496d15e050",
-    "content-hash": "6c509a49e868880cad005f4db0376e6a",
+    "hash": "295e70470ddb701923e88eefc2be8729",
+    "content-hash": "5d04d3c9a6074cd8b7de80792254f722",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -369,6 +369,39 @@
                 "yii"
             ],
             "time": "2015-10-14 19:37:01"
+        },
+        {
+            "name": "kucha/ueditor",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BigKuCha/yii2-ueditor-widget.git",
+                "reference": "822abe88d3fdb4550aa1986ebff94551319aaef7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BigKuCha/yii2-ueditor-widget/zipball/822abe88d3fdb4550aa1986ebff94551319aaef7",
+                "reference": "822abe88d3fdb4550aa1986ebff94551319aaef7",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "kucha\\ueditor\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "BigKuCha",
+                    "email": "nevermore1989@vip.qq.com"
+                }
+            ],
+            "description": "desc",
+            "time": "2016-09-29 08:04:22"
         },
         {
             "name": "mdmsoft/yii2-admin",
@@ -1074,7 +1107,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "ijackua/yii2-lepture-markdown-editor-widget": 20
     },

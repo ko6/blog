@@ -40,7 +40,14 @@ class PostController extends Controller
         ];
     }
 
-
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class' => 'kucha\ueditor\UEditorAction',
+            ]
+        ];
+    }
 
     /**
      * Lists all Post models.
@@ -78,9 +85,19 @@ class PostController extends Controller
     {
         $model = new Post();
 
+        $p = Yii::$app->request->post();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->post_id]);
+        if ($model->load($p)){
+            //判断正文格式，然后加载对应编辑器里的内容保存到数据库
+            if($model->post_content_type == 1 && isset($p['Post']["post_content_1"])){
+                $model->post_content = $p['Post']["post_content_1"];
+            } elseif ($model->post_content_type == 2 && isset($p['Post']["post_content_2"])) {
+                $model->post_content = $p['Post']["post_content_2"];
+            }
+
+            if ( $model->save()) {
+                return $this->redirect(['view', 'id' => $model->post_id]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,

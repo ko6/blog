@@ -19,7 +19,7 @@ class PostSearch extends Post
     {
         return [
             [['post_id', 'post_author', 'created_at', 'updated_at', 'post_category', 'post_status', 'post_content_type', 'post_hits'], 'integer'],
-            [['post_title', 'post_keywords', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic'], 'safe'],
+            [['post_title', 'post_keywords', 'post_excerpt', 'post_url_name', 'post_content','post_content_1','post_content_2', 'post_pic'], 'safe'],
         ];
     }
 

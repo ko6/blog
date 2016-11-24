@@ -28,6 +28,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         array (
             'mdm\\admin\\' => 10,
         ),
+        'k' => 
+        array (
+            'kucha\\ueditor\\' => 14,
+        ),
         'i' => 
         array (
             'ijackua\\lepture\\' => 16,
@@ -82,6 +86,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         'mdm\\admin\\' => 
         array (
             0 => __DIR__ . '/..' . '/mdmsoft/yii2-admin',
+        ),
+        'kucha\\ueditor\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kucha/ueditor',
         ),
         'ijackua\\lepture\\' => 
         array (

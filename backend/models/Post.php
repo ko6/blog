@@ -21,6 +21,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $post_url_name
  * @property integer $post_content_type
  * @property string $post_content
+ * @property string $post_content_1
  * @property integer $post_hits
  * @property string $post_pic
  */
@@ -81,7 +82,16 @@ class Post extends \yii\db\ActiveRecord
             'post_pic' => '栏目页展示图片',
         ];
     }
-/**
+
+    public function getPost_content_1()
+    {
+        return '';
+    }
+    public function getPost_content_2()
+    {
+        return '';
+    }
+    /**
 * 保存数据前处理发布日期字段,添加作者信息
 */
     public function beforeSave($insert)
