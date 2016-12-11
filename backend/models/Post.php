@@ -15,10 +15,13 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $updated_at
  * @property string $post_title
  * @property integer $post_category
+ * @property string $post_keywords
  * @property string $post_excerpt
  * @property integer $post_status
  * @property string $post_url_name
+ * @property integer $post_content_type
  * @property string $post_content
+ * @property string $post_content_1
  * @property integer $post_hits
  * @property string $post_pic
  */
@@ -39,8 +42,9 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             [['created_at', 'post_title', 'post_category', 'post_url_name', 'post_content'], 'required'],
-            [['post_author', 'updated_at', 'post_category', 'post_status', 'post_hits'], 'integer'],
+            [['post_author', 'updated_at', 'post_category','post_content_type', 'post_status', 'post_hits'], 'integer'],
             [['post_title', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic'], 'string'],
+            [['post_keywords'], 'string', 'max' => 255],
         ];
     }
 
@@ -68,15 +72,26 @@ class Post extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'post_title' => '标题',
             'post_category' => '分类',
+            'post_keywords' => '文章seo关键字',
             'post_excerpt' => '简介',
             'post_status' => 'Post Status',
             'post_url_name' => 'url名称，用作个性化文章网址',
+            'post_content_type' => '文章解析格式（1:html富文本，2:markdown格式）',
             'post_content' => '正文',
             'post_hits' => '点击数',
             'post_pic' => '栏目页展示图片',
         ];
     }
-/**
+
+    public function getPost_content_1()
+    {
+        return '';
+    }
+    public function getPost_content_2()
+    {
+        return '';
+    }
+    /**
 * 保存数据前处理发布日期字段,添加作者信息
 */
     public function beforeSave($insert)
