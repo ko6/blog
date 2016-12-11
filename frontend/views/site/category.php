@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 /* @var $this yii\web\View */
 
-$this->title = '1';
+// $this->title = '1';
 // $this->description = isset($site_info['site_name'])?$site_info['site_name']:'My Yii Application';
 
  $this->registerMetaTag ( [  'name' => "description" ,  'content'=>"new description",],"description");
@@ -16,8 +16,8 @@ if (isset($post)) {
 <div class="blog"><!-- start main -->
 	<div class="container">
 		<div class="main row">
-			<div class="col-md-8 blog_left">
-				<h2 class="style">koko blog</h2>
+			<div class="col-md-12 blog_left">
+				<!-- <h2 class="style">koko blog</h2> -->
         <?php foreach ($post as $p ) {
     ?>
 
@@ -52,7 +52,8 @@ if (isset($post)) {
         <?php
 } ?>
 			</div>
-			<div class="col-md-4 blog_right">
+
+			<!-- <div class="col-md-4 blog_right">
 				<ul class="ads_nav list-unstyled">
 					<h4>Ads 125 x 125</h4>
 						<li><a href="#"><img src="images/ads_pic.jpg" alt=""> </a></li>
@@ -77,7 +78,7 @@ if (isset($post)) {
 						<div class="clearfix"></div>
 				</ul>
 				<!-- start social_network_likes -->
-					<div class="social_network_likes">
+					<!-- <div class="social_network_likes">
 				      		 <ul class="list-unstyled">
 				      		 	<li><a href="#" class="tweets"><div class="followers"><p><span>2k</span>Followers</p></div><div class="social_network"><i class="twitter-icon"> </i> </div></a></li>
 				      			<li><a href="#" class="facebook-followers"><div class="followers"><p><span>5k</span>Followers</p></div><div class="social_network"><i class="facebook-icon"> </i> </div></a></li>
@@ -93,7 +94,7 @@ if (isset($post)) {
 							<span  class="pull-right fa-btn btn-1 btn-1e"><input type="submit" value="subscribe"></span>
 						</form>
 				</div>
-			</div>
+			</div> -->
 			<div class="clearfix"></div>
 		</div>
 	</div>

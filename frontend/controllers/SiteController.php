@@ -77,9 +77,16 @@ class SiteController extends Controller
     {
 
 
-         return $this->render('index',[
-           'site_info' => SiteInfo::get_site_info(), //获取网站基本信息
-         ]);
+        //  return $this->render('index',[
+          //  'site_info' => SiteInfo::get_site_info(), //获取网站基本信息
+        //  ]);
+//临时跳转至文章列表页
+         $post = Post::find()->where(['post_category'=>'1'])->orderby("created_at desc")->asArray()->all();
+
+               return $this->render('category',[
+               'post' => $post, //传递文章列表信息
+             ]);
+
     }
 
     public function actionA($id)
