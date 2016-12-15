@@ -10,9 +10,9 @@ use backend\models\Tips;
 
 $this->title = 'Tips';
 $this->params['breadcrumbs'][] = $this->title;
-Tips::set_tips(['新标签12'],["test4","test","test55"]);
-echo('test2=');
-print_r(Tips::find_tip('test2',false));
+//Tips::set_tips(['新标签12'],["test4","test","test55"]);
+//echo('test2=');
+//print_r(Tips::find_tip('test2',false));
 ?>
 <div class="tips-index">
 

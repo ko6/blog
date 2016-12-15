@@ -5,10 +5,12 @@ namespace backend\controllers;
 use Yii;
 use backend\models\Post;
 use backend\models\PostSearch;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use backend\models\Tips;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -93,7 +95,13 @@ class PostController extends Controller
                 $model->post_content = $p['Post']["post_content_1"];
             } elseif ($model->post_content_type == 2 && isset($p['Post']["post_content_2"])) {
                 $model->post_content = $p['Post']["post_content_2"];
+            } else {
+                echo '<script> alert("编辑器类型或编辑器内容异常，获取文章正文内容失败");</script>';
             }
+
+            //处理文章标签，主要是标签使用统计
+            Tips::set_tips($model->post_tips,$model->oldAttributes['post_tips']);
+
 
             if ( $model->save()) {
                 return $this->redirect(['view', 'id' => $model->post_id]);
@@ -115,8 +123,24 @@ class PostController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->post_id]);
+        $p = Yii::$app->request->post();
+
+        if ($model->load($p)){
+            //判断正文格式，然后加载对应编辑器里的内容保存到数据库
+            if($model->post_content_type == 1 && isset($p['Post']["post_content_1"])){
+                $model->post_content =$p['Post']["post_content_1"];
+            } elseif ($model->post_content_type == 2 && isset($p['Post']["post_content_2"])) {
+                $model->post_content = $p['Post']["post_content_2"];
+            } else {
+                echo '<script> alert("编辑器类型或编辑器内容异常，获取文章正文内容失败");</script>';
+            }
+
+            //处理文章标签，主要是标签使用统计
+            Tips::set_tips($model->post_tips,$model->oldAttributes['post_tips']);
+
+            if ( $model->save()) {
+                return $this->redirect(['view', 'id' => $model->post_id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,

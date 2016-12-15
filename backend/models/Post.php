@@ -21,9 +21,12 @@ use yii\behaviors\TimestampBehavior;
  * @property string $post_url_name
  * @property integer $post_content_type
  * @property string $post_content
- * @property string $post_content_1
+ * @property string $post_content_1 用于编辑页面传递富文本编辑器内容
+ * @property string $post_content_2 用于编辑页面传递markdown编辑器内容
  * @property integer $post_hits
  * @property string $post_pic
+ * @property string $post_tips
+ * @property string $post_old_tips
  */
 class Post extends \yii\db\ActiveRecord
 {
@@ -43,7 +46,7 @@ class Post extends \yii\db\ActiveRecord
         return [
             [['created_at', 'post_title', 'post_category', 'post_url_name', 'post_content'], 'required'],
             [['post_author', 'updated_at', 'post_category','post_content_type', 'post_status', 'post_hits'], 'integer'],
-            [['post_title', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic'], 'string'],
+            [['post_title', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic', 'post_tips'], 'string'],
             [['post_keywords'], 'string', 'max' => 255],
         ];
     }
@@ -85,11 +88,23 @@ class Post extends \yii\db\ActiveRecord
 
     public function getPost_content_1()
     {
-        return '';
+        return  $this->post_content;
     }
     public function getPost_content_2()
     {
-        return '';
+        return  $this->post_content;
+    }
+    public function getPost_old_tips()
+    {
+        return  $this->post_tips;
+    }
+    public function setPost_content_1($value)
+    {
+        $this->post_content_1 = $value;
+    }
+    public function setPost_content_2($value)
+    {
+        $this->post_content_2 = $value;
     }
     /**
 * 保存数据前处理发布日期字段,添加作者信息

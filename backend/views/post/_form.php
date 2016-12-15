@@ -21,7 +21,6 @@ $model->post_content_type == "" && $model->post_content_type = 1; //初始化编
     <?php $form = ActiveForm::begin([
 'fieldConfig'=>['labelOptions'=>['style'=>'float:left;padding:7px;width:10%;'],'inputOptions'=>['style'=>'width:80%','class'=>'form-control']]
     ]); ?>
-    <!-- 'inputOptions'=>['class'=>'form-control col-md-4','style'=>'width:auto;'] -->
 
     <?= $form->field($model, 'post_category',['options'=>['class'=>'col-md-3'],'labelOptions'=>['style'=>'float:left;padding:7px;width:25%;'],'inputOptions'=>['style'=>'width:70%'] ])->dropdownlist(PostCategory::get_post_category()) ?>
 

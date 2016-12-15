@@ -51,13 +51,23 @@ class Tips extends \yii\db\ActiveRecord
         ];
     }
 
+
     /**
-     * @设置标签。新标签，添加且计数+1，旧标签，计数-1
+     * 设置标签。新标签，添加且计数+1，旧标签，计数-1
+     * @param  $new_tips 新的标签字串，以|分隔标签。例：标签1|标签2|标签4
+     * @param null $old_tips 旧的标签字串，以|分隔标签。例：标签1|标签2|标签4
      */
-    public function set_tips($new_tips,$old_tip = null)
+    public function set_tips($new_tips,$old_tips = null)
     {
-        if(count($new_tips)>0){
-            foreach($new_tips as $tip){
+        $new=null;
+        $old=null;
+        isset($new_tips) && $new = array_unique(explode("|",$new_tips));
+        isset($old_tips) && $old = array_unique(explode("|",$old_tips));
+//        var_dump($new);
+//        var_dump($old);
+//        exit;
+        if(count($new)>0){
+            foreach($new as $tip){
                     $id = Tips::find_tip($tip);
                 if($id>0){
                     $T=Tips::findOne(['id'=>$id]);
@@ -66,8 +76,8 @@ class Tips extends \yii\db\ActiveRecord
                 }
             }
         }
-        if(count($old_tip)>0){
-            foreach($old_tip as $tip){
+        if(count($old)>0){
+            foreach($old as $tip){
                 $id = Tips::find_tip($tip,false);//标签不存在时不添加
                 if($id>0){//判断是否存在标签
                     $T=Tips::findOne(['id'=>$id]);
