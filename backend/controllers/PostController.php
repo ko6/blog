@@ -100,7 +100,12 @@ class PostController extends Controller
             }
 
             //处理文章标签，主要是标签使用统计
-            Tips::set_tips($model->post_tips,$model->oldAttributes['post_tips']);
+
+            if(isset($model->post_tips) && $model->post_tips!=null ){
+              Tips::set_tips($model->post_tips);
+
+            }
+
 
 
             if ( $model->save()) {
@@ -136,7 +141,9 @@ class PostController extends Controller
             }
 
             //处理文章标签，主要是标签使用统计
-            Tips::set_tips($model->post_tips,$model->oldAttributes['post_tips']);
+            if(isset($model->post_tips) && isset($model->oldAttributes['post_tips']) && ($model->post_tips!=null || $model->oldAttributes['post_tips']!=null)){
+              Tips::set_tips($model->post_tips,$model->oldAttributes['post_tips']);
+            }
 
             if ( $model->save()) {
                 return $this->redirect(['view', 'id' => $model->post_id]);

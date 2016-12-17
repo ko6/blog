@@ -95,6 +95,9 @@ class Tips extends \yii\db\ActiveRecord
      */
     public static function find_tip($tip,$add = true)
     {
+        if($tip == null){
+          return null;
+        }
         //查询
         $id = Tips::find()->where(['name'=>$tip])->select('id')->asArray()->one();
         if ($id==null){ //没有找到
