@@ -506,9 +506,9 @@ h2.style{
 	margin-left: 0;
 }
 .blog_list li a{
-	display: block;
+	/*display: block;*/
 	padding: 4px 8px;
-	color: #b6b6b6;
+	color: #5a5a5a;
 	text-transform: capitalize;
 }
 .blog_list ul li i{

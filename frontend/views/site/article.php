@@ -31,18 +31,19 @@ if (isset($post)) {
                     <ul class="list-unstyled">
                         <li><i class="fa fa-calendar-o"></i><span><?=date("Y-m-d",$post['updated_at']) ?></span></li>
                         <li><i class="fa fa-user"></i><span>koko</span></li>
-                        <li><i class="fa fa-tags"></i><span class="label label-info" href="#1">Info</span></li>
+                        <li><i class="fa fa-tags"></i>
 
                                     <?php
                                    if(isset($post['post_tips']) && $tips = array_unique(explode("|",$post['post_tips']))){
                                        if(count($tips)>0){
                                            foreach($tips as $tip){
-                                               echo "<li><a href=". Url::to('/t/'.$tip)." class=\"label label-info tips\">$tip</a></li>";
+                                               echo "<a href=". Url::to('/t/'.$tip)." >$tip</a>";
                                                }
                                            }
                                        }
 
                                     ?>
+                          </li>
                     </ul>
                 </div>
                 <div class="b_left blog_list pull-right">
