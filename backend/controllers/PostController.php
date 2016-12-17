@@ -99,6 +99,9 @@ class PostController extends Controller
                 echo '<script> alert("编辑器类型或编辑器内容异常，获取文章正文内容失败");</script>';
             }
 
+            //处理正文为空的情况
+            $model->post_content == null && $model->post_content = '正文无内容';
+
             //处理文章标签，主要是标签使用统计
 
             if(isset($model->post_tips) && $model->post_tips!=null ){
@@ -110,6 +113,9 @@ class PostController extends Controller
 
             if ( $model->save()) {
                 return $this->redirect(['view', 'id' => $model->post_id]);
+            } else {
+                echo '<script> alert("添加失败");history.go(-1);</script>';
+
             }
         } else {
             return $this->render('create', [
@@ -139,6 +145,9 @@ class PostController extends Controller
             } else {
                 echo '<script> alert("编辑器类型或编辑器内容异常，获取文章正文内容失败");</script>';
             }
+            
+            //处理正文为空的情况
+            $model->post_content == null && $model->post_content = '正文无内容';
 
             //处理文章标签，主要是标签使用统计
             if(isset($model->post_tips) && isset($model->oldAttributes['post_tips']) && ($model->post_tips!=null || $model->oldAttributes['post_tips']!=null)){
@@ -147,6 +156,8 @@ class PostController extends Controller
 
             if ( $model->save()) {
                 return $this->redirect(['view', 'id' => $model->post_id]);
+            } else {
+                echo '<script> alert("编辑失败");history.go(-1);</script>';
             }
         } else {
             return $this->render('update', [
