@@ -24,10 +24,11 @@ if (isset($post)) {
 
 				<div class="blog_main">
           <div class="col-md-4" style="max-height:248px;overflow:hidden;">
-            <a href="single-page.html"><img src=<?= $p['post_pic']!=""?$p['post_pic']:"/images/blog_pic1.jpg"?> alt="" class="blog_img img-responsive" /></a>
+            <!-- "<img src=".."class=\"blog_img img-responsive\" />" -->
+            <?= Html::a(Html::img($p['post_pic']!=""?$p['post_pic']:"http://lorempixel.com/400/200/nature/",['class'=>'blog_img img-responsive']), ["a/$p[post_id]/$p[post_url_name]"])?>
           </div>
           <div  class="col-md-8">
-            <h4><a href="single-page.html"><?=$p['post_title']?></a></h4>
+            <h4><?= Html::a($p['post_title'], ["a/$p[post_id]/$p[post_url_name]"]) ?></h4>
             <div class="blog_list pull-left">
               <ul class="list-unstyled">
                 <li><i class="fa fa-calendar-o"></i><span><?=date("Y-m-d",$p['created_at'])?></span></li>

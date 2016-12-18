@@ -109,6 +109,10 @@ class PostController extends Controller
 
             }
 
+            //处理文章发布日期
+            $model->created_at = strtotime($model->created_at);
+            $model->updated_at = time();
+
 
 
             if ( $model->save()) {
@@ -145,7 +149,7 @@ class PostController extends Controller
             } else {
                 echo '<script> alert("编辑器类型或编辑器内容异常，获取文章正文内容失败");</script>';
             }
-            
+
             //处理正文为空的情况
             $model->post_content == null && $model->post_content = '正文无内容';
 
@@ -154,9 +158,16 @@ class PostController extends Controller
               Tips::set_tips($model->post_tips,$model->oldAttributes['post_tips']);
             }
 
+            //处理文章发布日期
+            $model->created_at = strtotime($model->created_at);
+            $model->updated_at = time();
+
+
+
             if ( $model->save()) {
                 return $this->redirect(['view', 'id' => $model->post_id]);
             } else {
+               var_dump($model->errors);
                 echo '<script> alert("编辑失败");history.go(-1);</script>';
             }
         } else {

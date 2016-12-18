@@ -99,10 +99,10 @@ class SiteController extends Controller
           throw new NotFoundHttpException('The requested page does not exist.');
       }
 
+      var_dump($post->created_at);
+
       $post->post_hits += 1;
       $post->save();
-
-
 
             return $this->render('article',[
             'post' => $post->attributes, //传递文章具体信息

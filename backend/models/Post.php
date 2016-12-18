@@ -44,7 +44,7 @@ class Post extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'post_title', 'post_category', 'post_url_name', 'post_content'], 'required'],
+            [['created_at' ,'updated_at','post_title', 'post_category', 'post_url_name', 'post_content'], 'required'],
             [['post_author', 'updated_at', 'post_category','post_content_type', 'post_status', 'post_hits'], 'integer'],
             [['post_title', 'post_excerpt', 'post_url_name', 'post_content', 'post_pic', 'post_tips'], 'string'],
             [['post_keywords'], 'string', 'max' => 255],
@@ -52,17 +52,18 @@ class Post extends \yii\db\ActiveRecord
     }
 
     /*
+    * 暂停使用，因为更新文章点击数时会触发时间更新
     * 自动以当前时间戳填充文章更新时间，updated_at为默认字段，不用再次指定。
     */
-    public function behaviors()
-    {
-        return [
-                   [
-                       'class' => TimestampBehavior::className(),
-                       'createdAtAttribute' => false,//不填充发布日期
-                   ],
-         ];
-    }
+    // public function behaviors()
+    // {
+    //     return [
+    //                [
+    //                    'class' => TimestampBehavior::className(),
+    //                    'createdAtAttribute' => false,//不填充发布日期
+    //                ],
+    //      ];
+    // }
     /**
      * @inheritdoc
      */
@@ -117,7 +118,7 @@ class Post extends \yii\db\ActiveRecord
           $this->post_author = Yii::$app->user->getId();
       }
             // 将发布日期转换为时间戳
-            $this->created_at = strtotime($this->created_at);
+            // $this->created_at = strtotime($this->created_at);
             return true;
         } else {
             return false;

@@ -29,7 +29,7 @@ if (isset($post)) {
                 <h2 class="style"><?=$post['post_title'] ?></h2>
                 <div class="blog_list pull-left">
                     <ul class="list-unstyled">
-                        <li><i class="fa fa-calendar-o"></i><span><?=date("Y-m-d",$post['updated_at']) ?></span></li>
+                        <li><i class="fa fa-calendar-o"></i><span><?=date("Y-m-d",$post['created_at']) ?></span></li>
                         <li><i class="fa fa-user"></i><span>koko</span></li>
                         <li><i class="fa fa-tags"></i>
 
