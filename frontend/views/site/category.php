@@ -4,9 +4,9 @@ use yii\helpers\Html;
 
 // $this->title = '1';
 // $this->description = isset($site_info['site_name'])?$site_info['site_name']:'My Yii Application';
-
- $this->registerMetaTag ( [  'name' => "description" ,  'content'=>"new description",],"description");
- $this->registerMetaTag ( [  'name' => "keywords" ,  'content'=>"new keywords",],'keywords');
+//这里可以设置分类的关键字及描述，暂时留空
+// $this->registerMetaTag ( [  'name' => "description" ,  'content'=>"new description",],"description");
+// $this->registerMetaTag ( [  'name' => "keywords" ,  'content'=>"new keywords",],'keywords');
 // var_dump($post);
 
 if (isset($post)) {
