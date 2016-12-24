@@ -1,12 +1,15 @@
 <?php
 use yii\helpers\Html;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 
 // $this->title = '1';
 // $this->description = isset($site_info['site_name'])?$site_info['site_name']:'My Yii Application';
+
 //这里可以设置分类的关键字及描述，暂时留空
 // $this->registerMetaTag ( [  'name' => "description" ,  'content'=>"new description",],"description");
 // $this->registerMetaTag ( [  'name' => "keywords" ,  'content'=>"new keywords",],'keywords');
+
 // var_dump($post);
 
 if (isset($post)) {
@@ -24,14 +27,26 @@ if (isset($post)) {
 
 				<div class="blog_main">
           <div class="col-md-4" style="max-height:248px;overflow:hidden;">
-            <a href="single-page.html"><img src=<?= $p['post_pic']!=""?$p['post_pic']:"/images/blog_pic1.jpg"?> alt="" class="blog_img img-responsive" /></a>
+            <!-- "<img src=".."class=\"blog_img img-responsive\" />" -->
+            <?= Html::a(Html::img($p['post_pic']!=""?$p['post_pic']:"http://lorempixel.com/400/200/nature/",['class'=>'blog_img img-responsive']), ["a/$p[post_id]/$p[post_url_name]"])?>
           </div>
           <div  class="col-md-8">
-            <h4><a href="single-page.html"><?=$p['post_title']?></a></h4>
+            <h4><?= Html::a($p['post_title'], ["a/$p[post_id]/$p[post_url_name]"]) ?></h4>
             <div class="blog_list pull-left">
               <ul class="list-unstyled">
                 <li><i class="fa fa-calendar-o"></i><span><?=date("Y-m-d",$p['created_at'])?></span></li>
-                <li><a href="#"><i class="fa fa-tags"></i><span><?=$p['post_hits']?></span></a></li>
+                <li><i class="fa fa-tags"></i>
+                  <?php
+                 if(isset($p['post_tips']) && $tips = array_unique(explode("|",$p['post_tips']))){
+                     if(count($tips)>0){
+                         foreach($tips as $tip){
+                             echo "<a href=". Url::to('/t/'.$tip)." >$tip</a>";
+                             }
+                         }
+                     }
+
+                  ?>
+                </li>
               </ul>
             </div>
             <div class="b_left blog_list pull-right">

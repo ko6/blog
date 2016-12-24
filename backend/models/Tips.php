@@ -57,7 +57,7 @@ class Tips extends \yii\db\ActiveRecord
      * @param  $new_tips 新的标签字串，以|分隔标签。例：标签1|标签2|标签4
      * @param null $old_tips 旧的标签字串，以|分隔标签。例：标签1|标签2|标签4
      */
-    public function set_tips($new_tips,$old_tips = null)
+    public static function set_tips($new_tips,$old_tips = null)
     {
         $new=null;
         $old=null;
@@ -93,8 +93,11 @@ class Tips extends \yii\db\ActiveRecord
     /**
      * @返回标签id，如果不存在根据参数$add判断：true添加并返回新id，false返回null。
      */
-    public function find_tip($tip,$add = true)
+    public static function find_tip($tip,$add = true)
     {
+        if($tip == null){
+          return null;
+        }
         //查询
         $id = Tips::find()->where(['name'=>$tip])->select('id')->asArray()->one();
         if ($id==null){ //没有找到

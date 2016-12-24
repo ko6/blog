@@ -99,10 +99,10 @@ class SiteController extends Controller
           throw new NotFoundHttpException('The requested page does not exist.');
       }
 
+      var_dump($post->created_at);
+
       $post->post_hits += 1;
       $post->save();
-
-
 
             return $this->render('article',[
             'post' => $post->attributes, //传递文章具体信息
@@ -126,33 +126,33 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
+    // public function actionLogin()
+    // {
+    //     if (!Yii::$app->user->isGuest) {
+    //         return $this->goHome();
+    //     }
+    //
+    //     $model = new LoginForm();
+    //     if ($model->load(Yii::$app->request->post()) && $model->login()) {
+    //         return $this->goBack();
+    //     } else {
+    //         return $this->render('login', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
 
     /**
      * Logs out the current user.
      *
      * @return mixed
      */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
+    // public function actionLogout()
+    // {
+    //     Yii::$app->user->logout();
+    //
+    //     return $this->goHome();
+    // }
 
     /**
      * Displays contact page.
@@ -182,31 +182,31 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
+    // public function actionAbout()
+    // {
+    //     return $this->render('about');
+    // }
 
     /**
      * Signs user up.
      *
      * @return mixed
      */
-    public function actionSignup()
-    {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
+    // public function actionSignup()
+    // {
+    //     $model = new SignupForm();
+    //     if ($model->load(Yii::$app->request->post())) {
+    //         if ($user = $model->signup()) {
+    //             if (Yii::$app->getUser()->login($user)) {
+    //                 return $this->goHome();
+    //             }
+    //         }
+    //     }
+    //
+    //     return $this->render('signup', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
     /**
      * Requests password reset.
