@@ -81,12 +81,13 @@ class SiteController extends Controller
           //  'site_info' => SiteInfo::get_site_info(), //获取网站基本信息
         //  ]);
 //临时跳转至文章列表页
-         $post = Post::find()->where(['post_category'=>'1'])->orderby("created_at desc")->asArray()->all();
+//         $post = Post::find()->where(['post_category'=>'1'])->orderby("created_at desc")->asArray()->all();
 
-               return $this->render('category',[
-               'post' => $post, //传递文章列表信息
-             ]);
+//               return $this->render('category',[
+//               'post' => $post, //传递文章列表信息
+//             ]);
 
+       return $this->actionC(1);
     }
 
     public function actionA($id)
@@ -110,13 +111,56 @@ class SiteController extends Controller
 
 
     }
+
+    /**
+     * @param $id
+     * @return string
+     */
+
     public function actionC($id)
     {
-      $post = Post::find()->where(['post_category'=>$id])->orderby("created_at desc")->asArray()->all();
+      $post = Post::find()->where(['post_category'=>$id,'post_status'=>"1"])
+          ->select('post_pic,post_title,post_id,post_url_name,post_tips,post_hits,post_excerpt,created_at')
+          ->orderby("created_at desc")
+          ->asArray()->all();
+
+        if(sizeof($post)==0){
+            return $this->render('error',[
+                'name' => 'Not Found (#404)',
+                'message'=>'没找到您访问的页面',
+            ]);
+        } else {
 
             return $this->render('category',[
-            'post' => $post, //传递文章列表信息
-          ]);
+                'post' => $post, //传递文章列表信息
+//                'title'=>'TIP: '.$id, //传递标题
+            ]);
+        }
+
+
+    }
+
+    public function actionT($id)
+    {
+      $post = Post::find()
+          ->where(['and',['like','post_tips',$id],'post_status'=>"1"])
+          ->select('post_pic,post_title,post_id,post_url_name,post_tips,post_hits,post_excerpt,created_at')
+          ->orderby("created_at desc")
+          ->asArray()->all();
+
+        if(sizeof($post)==0){
+            return $this->render('error',[
+                'name' => 'Not Found (#404)',
+                'message'=>'没找到您访问的页面',
+            ]);
+        } else {
+
+            return $this->render('category',[
+                'post' => $post, //传递文章列表信息
+                'title'=>'TIP: '.$id, //传递标题
+            ]);
+        }
+
 
 
     }
@@ -159,23 +203,23 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
+//    public function actionContact()
+//    {
+//        $model = new ContactForm();
+//        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+//            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+//                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+//            } else {
+//                Yii::$app->session->setFlash('error', 'There was an error sending email.');
+//            }
+//
+//            return $this->refresh();
+//        } else {
+//            return $this->render('contact', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
 
     /**
      * Displays about page.

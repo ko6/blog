@@ -10,6 +10,8 @@ return [
         'showScriptName' => false,
         'rules' => [
           'a/<id:.*>' => 'site/a',
+          't/<id:.*>' => 'site/t',
+          'c/<id:.*>' => 'site/c',
           // '/<id:.*>' => 'site',
         ]
         ],

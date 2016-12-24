@@ -42,7 +42,7 @@ nav ul {
 }
 nav li {
 	display: inline-block;
-	margin: 10px 8px;
+	margin: 0 8px;
 }
 nav li.active a,nav li  a:hover{
 	text-decoration:none;
@@ -276,7 +276,7 @@ nav a#pull {
 	background: #353535;
 }
 .footer{
-	padding: 4%;
+	/*padding: 4%;*/
 }
 .contact_left h3{
 	font-family: 'Kreon', serif;

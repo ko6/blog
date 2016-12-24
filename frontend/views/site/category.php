@@ -11,8 +11,11 @@ use yii\helpers\Url;
 // $this->registerMetaTag ( [  'name' => "keywords" ,  'content'=>"new keywords",],'keywords');
 
 // var_dump($post);
+// var_dump(is_null($post));
+// var_dump(count($post));
+// var_dump(sizeof($post));
 
-if (isset($post)) {
+if (isset($post) && sizeof($post) >0 ) {
     //有相关文章信息  # code...
 
 ?>
@@ -20,8 +23,12 @@ if (isset($post)) {
 	<div class="container">
 		<div class="main row">
 			<div class="col-md-12 blog_left">
-				<!-- <h2 class="style">koko blog</h2> -->
-        <?php foreach ($post as $p ) {
+                <?php
+
+                //如果有设置标题就显示
+                isset($title) &&  print "<h2 class=\"style\">$title</h2>"  ;
+
+         foreach ($post as $p ) {
     ?>
 
 
@@ -122,12 +129,13 @@ if (isset($post)) {
 
 
 
- ?>
-The requested page does not exist.
+
+print 'The requested page does not exist.';
 
 
-<?php
 
+
+    return $this->context->redirect('/');
 }
 
  ?>
