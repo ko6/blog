@@ -17,6 +17,7 @@ class AppAsset extends AssetBundle
         'fonts/css/font-awesome.min.css',
     ];
     public $js = [
+        'js/baidu_tj.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
