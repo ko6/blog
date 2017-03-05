@@ -12,17 +12,18 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": ">=2.0.6",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "mdmsoft/yii2-admin": "~1.0",
-        "ijackua/yii2-lepture-markdown-editor-widget": "dev-master",
-        "kucha/ueditor": "*"
+        "kucha/ueditor": "*",
+        "skeeks/yii2-assets-auto-compress": "*"
     },
     "require-dev": {
+        "ijackua/yii2-lepture-markdown-editor-widget": "dev-master",
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-debug": "*",
         "yiisoft/yii2-gii": "*",

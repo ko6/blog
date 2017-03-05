@@ -15,6 +15,8 @@ return array(
     'yii\\codeception\\' => array($vendorDir . '/yiisoft/yii2-codeception'),
     'yii\\bootstrap\\' => array($vendorDir . '/yiisoft/yii2-bootstrap'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
+    'skeeks\\yii2\\assetsAuto\\' => array($vendorDir . '/skeeks/yii2-assets-auto-compress'),
+    'rmrevin\\yii\\minify\\' => array($vendorDir . '/rmrevin/yii2-minify-view'),
     'mdm\\admin\\' => array($vendorDir . '/mdmsoft/yii2-admin'),
     'kucha\\ueditor\\' => array($vendorDir . '/kucha/ueditor'),
     'ijackua\\lepture\\' => array($vendorDir . '/ijackua/yii2-lepture-markdown-editor-widget'),
