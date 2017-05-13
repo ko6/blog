@@ -201,6 +201,9 @@ template;
     public $comment_reply="            <div class=\"x-comment-info\">
                 <hr>
                 <a target=\"_blank\" class=\"btn  btn-sm btn-default\"  href=\"/discuss/00142954259723555cb71c29536401390a587b71a218900000/00147787749749162ccf4579342403c967186d4141c80c1000#reply\"><i class=\"fa fa-reply\"></i> 回复此评论</a>
+                <button type=\"button\" class=\"list-group-item\" data-toggle=\"modal\" data-target=\"#exampleModal\"
+                            data-whatever=\"张三\">张三
+                    </button>
             </div>";
     public $comment_foot="</ul></div>";
 
@@ -290,12 +293,13 @@ stye;
      */
     public function init()
     {
-        echo $this->template;
-        echo $this->id;
+//        echo $this->template;
+//        echo $this->id;
         echo $this->style;
 
 
 
+        //输出评论头区部代码
         echo $this->comment_head;
         $k=mt_rand(2,5);
 
@@ -318,27 +322,106 @@ stye;
 
             echo '</li>';
         }
+
+        //输出评论区尾部代码
         echo $this->comment_foot;
+
+        $model=new Comment();
         ?>
-<?php $form = ActiveForm::begin(); ?>
 
 
 
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">发表评论</h4>
+                    </div>
+                    <?php $form = ActiveForm::begin(
+                        ['action'=> ['backend/comment/create'],]
+                    ); ?>
+                    <div class="modal-body container-fluid ">
 
-<?= $form->field($model, 'comment_name',['options'=>['class'=>'col-xs-4']])->textInput(['maxlength' => true])->label('你的名字') ?>
 
-<?= $form->field($model, 'comment_link_id',['options'=>['class'=>'col-xs-4']])->textInput()->label('你的主页') ?>
+                        <?= $form->field($model, 'comment_father_id')->hiddenInput(['value'=>1])->label(false)->error(false); ?>
+                        <?= $form->field($model, 'comment_post_id')->hiddenInput(['value'=>1])->label(false)->error(false); ?>
+                        <?= $form->field($model, 'comment_name',['options'=>['class'=>'col-xs-5'],'labelOptions'=>['style'=>'float:left;padding:3px 0;width:32%;'],'inputOptions'=>['style'=>'width:68%'] ])->textInput(['maxlength' => true])->label('您的名字') ?>
+                        <?= $form->field($model, 'comment_email',['options'=>['class'=>'col-xs-7'],'labelOptions'=>['style'=>'float:left;padding:3px 0;width:16%;'],'inputOptions'=>['style'=>'width:84%']])->textInput(['maxlength' => true])->label('邮箱') ?>
+                        <?= $form->field($model, 'comment_link',['options'=>['class'=>'col-xs-12'],'labelOptions'=>['style'=>'float:left;padding:3px 0;width:12%;'],'inputOptions'=>['style'=>'width:88%']])->textInput()->label('您的站点') ?>
 
-<?= $form->field($model, 'comment_email',['options'=>['class'=>'col-xs-4']])->textInput(['maxlength' => true])->label('你的邮箱') ?>
-
-<?= $form->field($model, 'comment_content',['options'=>['class'=>'col-xs-12']])->textarea(['rows' => 3])->label('你的评论') ?>
+                        <?= $form->field($model, 'comment_content',['options'=>['class'=>'col-xs-12']])->textarea(['rows' => 3])->label('评论内容') ?>
 
 
-<div class="form-group">
-    <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-</div>
 
-<?php ActiveForm::end();
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        //todo ajax 提交评论；前端中转保存；成功后提示；清除评论框中内容；记录用户ip；同ip免审核显示；
+                        <?= Html::submitButton('提交', ['class' => 'btn btn-primary']) ?>
+                    </div>
+                    <?php ActiveForm::end(); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">好友列表</div>
+            <div class="panel-body">
+                <div class="list-group" role="group" aria-label="好友列表">
+                    <button type="button" class="list-group-item" data-toggle="modal" data-target="#exampleModal"
+                            data-whatever="张三">张三
+                    </button>
+                    <button type="button" class="list-group-item" data-toggle="modal" data-target="#exampleModal"
+                            data-whatever="李四">李四
+                    </button>
+                    <button type="button" class="list-group-item" data-toggle="modal" data-target="#exampleModal"
+                            data-whatever="王二">王二
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">Recipient:</label>
+                                <input type="text" class="form-control" id="recipient-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">Message:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Send message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#exampleModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) // 触发事件的按钮
+                var recipient = button.data('whatever') // 解析出data-whatever内容
+                var modal = $(this)
+                console.log(modal)
+//                modal.find('.modal-title').text('Message To ' + recipient)
+                modal.find('.modal-body input').val(recipient)
+            })
+        </script>
+        <?php
         parent::init();
     }
 

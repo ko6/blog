@@ -12,21 +12,17 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'comment_father_id')->textInput() ?>
 
-    <?= $form->field($model, 'comment_post_id')->textInput() ?>
 
-    <?= $form->field($model, 'comment_status')->textInput() ?>
 
-    <?= $form->field($model, 'comment_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'comment_name',['options'=>['class'=>'col-xs-4']])->textInput(['maxlength' => true])->label('你的名字') ?>
 
-    <?= $form->field($model, 'comment_link_id')->textInput() ?>
+    <?= $form->field($model, 'comment_link_id',['options'=>['class'=>'col-xs-4']])->textInput()->label('你的主页') ?>
 
-    <?= $form->field($model, 'comment_email')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'comment_email',['options'=>['class'=>'col-xs-4']])->textInput(['maxlength' => true])->label('你的邮箱') ?>
 
-    <?= $form->field($model, 'comment_content')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'comment_content',['options'=>['class'=>'col-xs-12']])->textarea(['rows' => 3])->label('你的评论') ?>
 
-    <?= $form->field($model, 'comment_ip')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

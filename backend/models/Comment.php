@@ -50,13 +50,21 @@ class Comment extends \yii\db\ActiveRecord
             'comment_id' => '评论id',
             'comment_father_id' => '评论爸爸id',
             'comment_post_id' => '被评论的文章id',
-            'comment_status' => '状态(1:显示,0:隐藏)',
-            'comment_name' => '评论者姓名',
+            'comment_status' => '状态(1:显示,0:待审,2:隐藏)',
+            'comment_name' => '您的名字',
             'comment_link_id' => '评论者网站链接id',
+            'comment_link' => '您的站点链接',
             'comment_email' => 'email',
-            'comment_content' => '评论正文',
+            'comment_content' => '评论内容',
             'comment_ip' => '评论者ip',
         ];
+    }
+
+
+    public function getComment_link()
+    {
+        //todo 返回链接id所对应的地址，如果有
+        return  $this->comment_link_id;
     }
 
 
