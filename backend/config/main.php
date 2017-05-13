@@ -38,6 +38,12 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'assetsAutoCompress' =>
+            [
+                'class'                         => '\skeeks\yii2\assetsAuto\AssetsAutoCompressComponent',
+                'enabled'                       => false,
+            ],
+
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,
