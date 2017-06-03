@@ -1,0 +1,1084 @@
+Index: backend/views/comment/_search.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/comment/_search.php	(revision )
++++ backend/views/comment/_search.php	(revision )
+@@ -0,0 +1,43 @@
++<?php
++
++use yii\helpers\Html;
++use yii\widgets\ActiveForm;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\CommentSearch */
++/* @var $form yii\widgets\ActiveForm */
++?>
++
++<div class="comment-search">
++
++    <?php $form = ActiveForm::begin([
++        'action' => ['index'],
++        'method' => 'get',
++    ]); ?>
++
++    <?= $form->field($model, 'comment_id') ?>
++
++    <?= $form->field($model, 'comment_father_id') ?>
++
++    <?= $form->field($model, 'comment_post_id') ?>
++
++    <?= $form->field($model, 'comment_status') ?>
++
++    <?= $form->field($model, 'comment_name') ?>
++
++    <?php // echo $form->field($model, 'comment_link_id') ?>
++
++    <?php // echo $form->field($model, 'comment_email') ?>
++
++    <?php // echo $form->field($model, 'comment_content') ?>
++
++    <?php // echo $form->field($model, 'comment_ip') ?>
++
++    <div class="form-group">
++        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
++        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
++    </div>
++
++    <?php ActiveForm::end(); ?>
++
++</div>
+Index: backend/models/Link.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/models/Link.php	(revision )
++++ backend/models/Link.php	(revision )
+@@ -0,0 +1,72 @@
++<?php
++
++namespace backend\models;
++
++use Yii;
++
++/**
++ * This is the model class for table "link".
++ *
++ * @property integer $link_id
++ * @property string $link_url
++ * @property integer $created_at
++ * @property integer $link_status
++ * @property integer $link_hits
++ * @property string $link_remark
++ */
++class Link extends \yii\db\ActiveRecord
++{
++    /**
++     * @inheritdoc
++     */
++    public static function tableName()
++    {
++        return 'link';
++    }
++
++    /**
++     * @inheritdoc
++     */
++    public function rules()
++    {
++        return [
++            [['link_url', 'link_status'], 'required'],
++            [['link_url', 'link_remark'], 'string'],
++            [['created_at', 'link_status', 'link_hits'], 'integer'],
++        ];
++    }
++
++    /**
++     * @inheritdoc
++     */
++    public function attributeLabels()
++    {
++        return [
++            'link_id' => 'Link ID',
++            'link_url' => 'Link Url',
++            'created_at' => 'Created At',
++            'link_status' => '状态(1:启用,0:禁用)',
++            'link_hits' => '链接访问量',
++            'link_remark' => 'Link Remark',
++        ];
++    }
++
++    /**
++     * 添加链接地址。返回链接id。如果已存在链接，直接返回id
++     * @param $link
++     * @return string
++     */
++    public static function add_link($link){
++        return '0';
++    }
++
++    /**
++     * 通过链接id查询链接信息。返回链接地址及链接状态。如果链接不存在，返回本站地址，状态404
++     * @param $id
++     * @return array
++     */
++    public static function get_link($id){
++        $link = ["url","status"];
++        return $link;
++    }
++}
+Index: backend/views/comment/_form.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/comment/_form.php	(revision )
++++ backend/views/comment/_form.php	(revision )
+@@ -0,0 +1,37 @@
++<?php
++
++use yii\helpers\Html;
++use yii\widgets\ActiveForm;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Comment */
++/* @var $form yii\widgets\ActiveForm */
++?>
++
++<div class="comment-form">
++
++    <?php $form = ActiveForm::begin(); ?>
++
++    <?= $form->field($model, 'comment_father_id')->textInput() ?>
++
++    <?= $form->field($model, 'comment_post_id')->textInput() ?>
++
++    <?= $form->field($model, 'comment_status')->textInput() ?>
++
++    <?= $form->field($model, 'comment_name')->textInput(['maxlength' => true]) ?>
++
++    <?= $form->field($model, 'comment_link_id')->textInput() ?>
++
++    <?= $form->field($model, 'comment_email')->textInput(['maxlength' => true]) ?>
++
++    <?= $form->field($model, 'comment_content')->textarea(['rows' => 6]) ?>
++
++    <?= $form->field($model, 'comment_ip')->textInput(['maxlength' => true]) ?>
++
++    <div class="form-group">
++        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
++    </div>
++
++    <?php ActiveForm::end(); ?>
++
++</div>
+Index: backend/controllers/LinkController.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/controllers/LinkController.php	(revision )
++++ backend/controllers/LinkController.php	(revision )
+@@ -0,0 +1,124 @@
++<?php
++
++namespace backend\controllers;
++
++use Yii;
++use backend\models\Link;
++use backend\models\LinkSearch;
++use yii\web\Controller;
++use yii\web\NotFoundHttpException;
++use yii\filters\VerbFilter;
++
++/**
++ * LinkController implements the CRUD actions for Link model.
++ */
++class LinkController extends Controller
++{
++    /**
++     * @inheritdoc
++     */
++    public function behaviors()
++    {
++        return [
++            'verbs' => [
++                'class' => VerbFilter::className(),
++                'actions' => [
++                    'delete' => ['POST'],
++                ],
++            ],
++        ];
++    }
++
++    /**
++     * Lists all Link models.
++     * @return mixed
++     */
++    public function actionIndex()
++    {
++        $searchModel = new LinkSearch();
++        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
++
++        return $this->render('index', [
++            'searchModel' => $searchModel,
++            'dataProvider' => $dataProvider,
++        ]);
++    }
++
++    /**
++     * Displays a single Link model.
++     * @param integer $id
++     * @return mixed
++     */
++    public function actionView($id)
++    {
++        return $this->render('view', [
++            'model' => $this->findModel($id),
++        ]);
++    }
++
++    /**
++     * Creates a new Link model.
++     * If creation is successful, the browser will be redirected to the 'view' page.
++     * @return mixed
++     */
++    public function actionCreate()
++    {
++        $model = new Link();
++
++        if ($model->load(Yii::$app->request->post()) && $model->save()) {
++            return $this->redirect(['view', 'id' => $model->link_id]);
++        } else {
++            return $this->render('create', [
++                'model' => $model,
++            ]);
++        }
++    }
++
++    /**
++     * Updates an existing Link model.
++     * If update is successful, the browser will be redirected to the 'view' page.
++     * @param integer $id
++     * @return mixed
++     */
++    public function actionUpdate($id)
++    {
++        $model = $this->findModel($id);
++
++        if ($model->load(Yii::$app->request->post()) && $model->save()) {
++            return $this->redirect(['view', 'id' => $model->link_id]);
++        } else {
++            return $this->render('update', [
++                'model' => $model,
++            ]);
++        }
++    }
++
++    /**
++     * Deletes an existing Link model.
++     * If deletion is successful, the browser will be redirected to the 'index' page.
++     * @param integer $id
++     * @return mixed
++     */
++    public function actionDelete($id)
++    {
++        $this->findModel($id)->delete();
++
++        return $this->redirect(['index']);
++    }
++
++    /**
++     * Finds the Link model based on its primary key value.
++     * If the model is not found, a 404 HTTP exception will be thrown.
++     * @param integer $id
++     * @return Link the loaded model
++     * @throws NotFoundHttpException if the model cannot be found
++     */
++    protected function findModel($id)
++    {
++        if (($model = Link::findOne($id)) !== null) {
++            return $model;
++        } else {
++            throw new NotFoundHttpException('The requested page does not exist.');
++        }
++    }
++}
+Index: backend/models/LinkSearch.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/models/LinkSearch.php	(revision )
++++ backend/models/LinkSearch.php	(revision )
+@@ -0,0 +1,73 @@
++<?php
++
++namespace backend\models;
++
++use Yii;
++use yii\base\Model;
++use yii\data\ActiveDataProvider;
++use backend\models\Link;
++
++/**
++ * LinkSearch represents the model behind the search form about `backend\models\Link`.
++ */
++class LinkSearch extends Link
++{
++    /**
++     * @inheritdoc
++     */
++    public function rules()
++    {
++        return [
++            [['link_id', 'created_at', 'link_status', 'link_hits'], 'integer'],
++            [['link_url', 'link_remark'], 'safe'],
++        ];
++    }
++
++    /**
++     * @inheritdoc
++     */
++    public function scenarios()
++    {
++        // bypass scenarios() implementation in the parent class
++        return Model::scenarios();
++    }
++
++    /**
++     * Creates data provider instance with search query applied
++     *
++     * @param array $params
++     *
++     * @return ActiveDataProvider
++     */
++    public function search($params)
++    {
++        $query = Link::find();
++
++        // add conditions that should always apply here
++
++        $dataProvider = new ActiveDataProvider([
++            'query' => $query,
++        ]);
++
++        $this->load($params);
++
++        if (!$this->validate()) {
++            // uncomment the following line if you do not want to return any records when validation fails
++            // $query->where('0=1');
++            return $dataProvider;
++        }
++
++        // grid filtering conditions
++        $query->andFilterWhere([
++            'link_id' => $this->link_id,
++            'created_at' => $this->created_at,
++            'link_status' => $this->link_status,
++            'link_hits' => $this->link_hits,
++        ]);
++
++        $query->andFilterWhere(['like', 'link_url', $this->link_url])
++            ->andFilterWhere(['like', 'link_remark', $this->link_remark]);
++
++        return $dataProvider;
++    }
++}
+Index: backend/views/comment/create.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/comment/create.php	(revision )
++++ backend/views/comment/create.php	(revision )
+@@ -0,0 +1,21 @@
++<?php
++
++use yii\helpers\Html;
++
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Comment */
++
++$this->title = 'Create Comment';
++$this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
++$this->params['breadcrumbs'][] = $this->title;
++?>
++<div class="comment-create">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++
++    <?= $this->render('_form', [
++        'model' => $model,
++    ]) ?>
++
++</div>
+Index: backend/models/CommentSearch.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/models/CommentSearch.php	(revision )
++++ backend/models/CommentSearch.php	(revision )
+@@ -0,0 +1,76 @@
++<?php
++
++namespace backend\models;
++
++use Yii;
++use yii\base\Model;
++use yii\data\ActiveDataProvider;
++use backend\models\Comment;
++
++/**
++ * CommentSearch represents the model behind the search form about `backend\models\Comment`.
++ */
++class CommentSearch extends Comment
++{
++    /**
++     * @inheritdoc
++     */
++    public function rules()
++    {
++        return [
++            [['comment_id', 'comment_father_id', 'comment_post_id', 'comment_status', 'comment_link_id'], 'integer'],
++            [['comment_name', 'comment_email', 'comment_content', 'comment_ip'], 'safe'],
++        ];
++    }
++
++    /**
++     * @inheritdoc
++     */
++    public function scenarios()
++    {
++        // bypass scenarios() implementation in the parent class
++        return Model::scenarios();
++    }
++
++    /**
++     * Creates data provider instance with search query applied
++     *
++     * @param array $params
++     *
++     * @return ActiveDataProvider
++     */
++    public function search($params)
++    {
++        $query = Comment::find();
++
++        // add conditions that should always apply here
++
++        $dataProvider = new ActiveDataProvider([
++            'query' => $query,
++        ]);
++
++        $this->load($params);
++
++        if (!$this->validate()) {
++            // uncomment the following line if you do not want to return any records when validation fails
++            // $query->where('0=1');
++            return $dataProvider;
++        }
++
++        // grid filtering conditions
++        $query->andFilterWhere([
++            'comment_id' => $this->comment_id,
++            'comment_father_id' => $this->comment_father_id,
++            'comment_post_id' => $this->comment_post_id,
++            'comment_status' => $this->comment_status,
++            'comment_link_id' => $this->comment_link_id,
++        ]);
++
++        $query->andFilterWhere(['like', 'comment_name', $this->comment_name])
++            ->andFilterWhere(['like', 'comment_email', $this->comment_email])
++            ->andFilterWhere(['like', 'comment_content', $this->comment_content])
++            ->andFilterWhere(['like', 'comment_ip', $this->comment_ip]);
++
++        return $dataProvider;
++    }
++}
+Index: backend/views/comment/view.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/comment/view.php	(revision )
++++ backend/views/comment/view.php	(revision )
+@@ -0,0 +1,43 @@
++<?php
++
++use yii\helpers\Html;
++use yii\widgets\DetailView;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Comment */
++
++$this->title = $model->comment_id;
++$this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
++$this->params['breadcrumbs'][] = $this->title;
++?>
++<div class="comment-view">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++
++    <p>
++        <?= Html::a('Update', ['update', 'id' => $model->comment_id], ['class' => 'btn btn-primary']) ?>
++        <?= Html::a('Delete', ['delete', 'id' => $model->comment_id], [
++            'class' => 'btn btn-danger',
++            'data' => [
++                'confirm' => 'Are you sure you want to delete this item?',
++                'method' => 'post',
++            ],
++        ]) ?>
++    </p>
++
++    <?= DetailView::widget([
++        'model' => $model,
++        'attributes' => [
++            'comment_id',
++            'comment_father_id',
++            'comment_post_id',
++            'comment_status',
++            'comment_name',
++            'comment_link_id',
++            'comment_email:email',
++            'comment_content:ntext',
++            'comment_ip',
++        ],
++    ]) ?>
++
++</div>
+Index: backend/views/link/view.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/link/view.php	(revision )
++++ backend/views/link/view.php	(revision )
+@@ -0,0 +1,40 @@
++<?php
++
++use yii\helpers\Html;
++use yii\widgets\DetailView;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Link */
++
++$this->title = $model->link_id;
++$this->params['breadcrumbs'][] = ['label' => 'Links', 'url' => ['index']];
++$this->params['breadcrumbs'][] = $this->title;
++?>
++<div class="link-view">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++
++    <p>
++        <?= Html::a('Update', ['update', 'id' => $model->link_id], ['class' => 'btn btn-primary']) ?>
++        <?= Html::a('Delete', ['delete', 'id' => $model->link_id], [
++            'class' => 'btn btn-danger',
++            'data' => [
++                'confirm' => 'Are you sure you want to delete this item?',
++                'method' => 'post',
++            ],
++        ]) ?>
++    </p>
++
++    <?= DetailView::widget([
++        'model' => $model,
++        'attributes' => [
++            'link_id',
++            'link_url:ntext',
++            'created_at',
++            'link_status',
++            'link_hits',
++            'link_remark:ntext',
++        ],
++    ]) ?>
++
++</div>
+Index: backend/models/Comment.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/models/Comment.php	(revision )
++++ backend/models/Comment.php	(revision )
+@@ -0,0 +1,63 @@
++<?php
++
++namespace backend\models;
++
++use Yii;
++
++/**
++ * This is the model class for table "comment".
++ *
++ * @property integer $comment_id
++ * @property integer $comment_father_id
++ * @property integer $comment_post_id
++ * @property integer $comment_status
++ * @property string $comment_name
++ * @property integer $comment_link_id
++ * @property string $comment_email
++ * @property string $comment_content
++ * @property string $comment_ip
++ */
++class Comment extends \yii\db\ActiveRecord
++{
++    /**
++     * @inheritdoc
++     */
++    public static function tableName()
++    {
++        return 'comment';
++    }
++
++    /**
++     * @inheritdoc
++     */
++    public function rules()
++    {
++        return [
++            [['comment_father_id', 'comment_post_id', 'comment_status', 'comment_link_id'], 'integer'],
++            [['comment_post_id', 'comment_status', 'comment_name', 'comment_email', 'comment_content'], 'required'],
++            [['comment_content'], 'string'],
++            [['comment_name', 'comment_ip'], 'string', 'max' => 50],
++            [['comment_email'], 'string', 'max' => 99],
++        ];
++    }
++
++    /**
++     * @inheritdoc
++     */
++    public function attributeLabels()
++    {
++        return [
++            'comment_id' => '评论id',
++            'comment_father_id' => '评论爸爸id',
++            'comment_post_id' => '被评论的文章id',
++            'comment_status' => '状态(1:显示,0:隐藏)',
++            'comment_name' => '评论者姓名',
++            'comment_link_id' => '评论者网站链接id',
++            'comment_email' => 'email',
++            'comment_content' => '评论正文',
++            'comment_ip' => '评论者ip',
++        ];
++    }
++
++
++}
+Index: backend/views/link/_form.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/link/_form.php	(revision )
++++ backend/views/link/_form.php	(revision )
+@@ -0,0 +1,31 @@
++<?php
++
++use yii\helpers\Html;
++use yii\widgets\ActiveForm;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Link */
++/* @var $form yii\widgets\ActiveForm */
++?>
++
++<div class="link-form">
++
++    <?php $form = ActiveForm::begin(); ?>
++
++    <?= $form->field($model, 'link_url')->textarea(['rows' => 6]) ?>
++
++    <?= $form->field($model, 'created_at')->textInput() ?>
++
++    <?= $form->field($model, 'link_status')->textInput() ?>
++
++    <?= $form->field($model, 'link_hits')->textInput() ?>
++
++    <?= $form->field($model, 'link_remark')->textarea(['rows' => 6]) ?>
++
++    <div class="form-group">
++        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
++    </div>
++
++    <?php ActiveForm::end(); ?>
++
++</div>
+Index: backend/views/layouts/main.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/layouts/main.php	(date 1484224159000)
++++ backend/views/layouts/main.php	(revision )
+@@ -38,6 +38,8 @@
+         ['label' => 'Home', 'url' => ['/site/index']],
+         ['label' => '网站信息', 'url' => ['/site-info/index']],
+         ['label' => 'blog', 'url' => ['/post/index']],
++        ['label' => '评论', 'url' => ['/comment/index']],
++        ['label' => '链接', 'url' => ['/link/index']],
+     ];
+     if (Yii::$app->user->isGuest) {
+         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+Index: backend/views/link/update.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/link/update.php	(revision )
++++ backend/views/link/update.php	(revision )
+@@ -0,0 +1,21 @@
++<?php
++
++use yii\helpers\Html;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Link */
++
++$this->title = 'Update Link: ' . $model->link_id;
++$this->params['breadcrumbs'][] = ['label' => 'Links', 'url' => ['index']];
++$this->params['breadcrumbs'][] = ['label' => $model->link_id, 'url' => ['view', 'id' => $model->link_id]];
++$this->params['breadcrumbs'][] = 'Update';
++?>
++<div class="link-update">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++
++    <?= $this->render('_form', [
++        'model' => $model,
++    ]) ?>
++
++</div>
+Index: backend/views/comment/update.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/comment/update.php	(revision )
++++ backend/views/comment/update.php	(revision )
+@@ -0,0 +1,21 @@
++<?php
++
++use yii\helpers\Html;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Comment */
++
++$this->title = 'Update Comment: ' . $model->comment_id;
++$this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
++$this->params['breadcrumbs'][] = ['label' => $model->comment_id, 'url' => ['view', 'id' => $model->comment_id]];
++$this->params['breadcrumbs'][] = 'Update';
++?>
++<div class="comment-update">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++
++    <?= $this->render('_form', [
++        'model' => $model,
++    ]) ?>
++
++</div>
+Index: backend/views/link/index.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/link/index.php	(revision )
++++ backend/views/link/index.php	(revision )
+@@ -0,0 +1,37 @@
++<?php
++
++use yii\helpers\Html;
++use yii\grid\GridView;
++
++/* @var $this yii\web\View */
++/* @var $searchModel backend\models\LinkSearch */
++/* @var $dataProvider yii\data\ActiveDataProvider */
++
++$this->title = 'Links';
++$this->params['breadcrumbs'][] = $this->title;
++?>
++<div class="link-index">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
++
++    <p>
++        <?= Html::a('Create Link', ['create'], ['class' => 'btn btn-success']) ?>
++    </p>
++    <?= GridView::widget([
++        'dataProvider' => $dataProvider,
++        'filterModel' => $searchModel,
++        'columns' => [
++            ['class' => 'yii\grid\SerialColumn'],
++
++            'link_id',
++            'link_url:ntext',
++            'created_at',
++            'link_status',
++            'link_hits',
++            // 'link_remark:ntext',
++
++            ['class' => 'yii\grid\ActionColumn'],
++        ],
++    ]); ?>
++</div>
+Index: backend/controllers/CommentController.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/controllers/CommentController.php	(revision )
++++ backend/controllers/CommentController.php	(revision )
+@@ -0,0 +1,124 @@
++<?php
++
++namespace backend\controllers;
++
++use Yii;
++use backend\models\Comment;
++use backend\models\CommentSearch;
++use yii\web\Controller;
++use yii\web\NotFoundHttpException;
++use yii\filters\VerbFilter;
++
++/**
++ * CommentController implements the CRUD actions for Comment model.
++ */
++class CommentController extends Controller
++{
++    /**
++     * @inheritdoc
++     */
++    public function behaviors()
++    {
++        return [
++            'verbs' => [
++                'class' => VerbFilter::className(),
++                'actions' => [
++                    'delete' => ['POST'],
++                ],
++            ],
++        ];
++    }
++
++    /**
++     * Lists all Comment models.
++     * @return mixed
++     */
++    public function actionIndex()
++    {
++        $searchModel = new CommentSearch();
++        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
++
++        return $this->render('index', [
++            'searchModel' => $searchModel,
++            'dataProvider' => $dataProvider,
++        ]);
++    }
++
++    /**
++     * Displays a single Comment model.
++     * @param integer $id
++     * @return mixed
++     */
++    public function actionView($id)
++    {
++        return $this->render('view', [
++            'model' => $this->findModel($id),
++        ]);
++    }
++
++    /**
++     * Creates a new Comment model.
++     * If creation is successful, the browser will be redirected to the 'view' page.
++     * @return mixed
++     */
++    public function actionCreate()
++    {
++        $model = new Comment();
++
++        if ($model->load(Yii::$app->request->post()) && $model->save()) {
++            return $this->redirect(['view', 'id' => $model->comment_id]);
++        } else {
++            return $this->render('create', [
++                'model' => $model,
++            ]);
++        }
++    }
++
++    /**
++     * Updates an existing Comment model.
++     * If update is successful, the browser will be redirected to the 'view' page.
++     * @param integer $id
++     * @return mixed
++     */
++    public function actionUpdate($id)
++    {
++        $model = $this->findModel($id);
++
++        if ($model->load(Yii::$app->request->post()) && $model->save()) {
++            return $this->redirect(['view', 'id' => $model->comment_id]);
++        } else {
++            return $this->render('update', [
++                'model' => $model,
++            ]);
++        }
++    }
++
++    /**
++     * Deletes an existing Comment model.
++     * If deletion is successful, the browser will be redirected to the 'index' page.
++     * @param integer $id
++     * @return mixed
++     */
++    public function actionDelete($id)
++    {
++        $this->findModel($id)->delete();
++
++        return $this->redirect(['index']);
++    }
++
++    /**
++     * Finds the Comment model based on its primary key value.
++     * If the model is not found, a 404 HTTP exception will be thrown.
++     * @param integer $id
++     * @return Comment the loaded model
++     * @throws NotFoundHttpException if the model cannot be found
++     */
++    protected function findModel($id)
++    {
++        if (($model = Comment::findOne($id)) !== null) {
++            return $model;
++        } else {
++            throw new NotFoundHttpException('The requested page does not exist.');
++        }
++    }
++}
+Index: backend/views/comment/index.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/comment/index.php	(revision )
++++ backend/views/comment/index.php	(revision )
+@@ -0,0 +1,40 @@
++<?php
++
++use yii\helpers\Html;
++use yii\grid\GridView;
++
++/* @var $this yii\web\View */
++/* @var $searchModel backend\models\CommentSearch */
++/* @var $dataProvider yii\data\ActiveDataProvider */
++
++$this->title = 'Comments';
++$this->params['breadcrumbs'][] = $this->title;
++?>
++<div class="comment-index">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
++
++    <p>
++        <?= Html::a('Create Comment', ['create'], ['class' => 'btn btn-success']) ?>
++    </p>
++    <?= GridView::widget([
++        'dataProvider' => $dataProvider,
++        'filterModel' => $searchModel,
++        'columns' => [
++            ['class' => 'yii\grid\SerialColumn'],
++
++            'comment_id',
++            'comment_father_id',
++            'comment_post_id',
++            'comment_status',
++            'comment_name',
++            // 'comment_link_id',
++            // 'comment_email:email',
++            // 'comment_content:ntext',
++            // 'comment_ip',
++
++            ['class' => 'yii\grid\ActionColumn'],
++        ],
++    ]); ?>
++</div>
+Index: backend/views/link/_search.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/link/_search.php	(revision )
++++ backend/views/link/_search.php	(revision )
+@@ -0,0 +1,37 @@
++<?php
++
++use yii\helpers\Html;
++use yii\widgets\ActiveForm;
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\LinkSearch */
++/* @var $form yii\widgets\ActiveForm */
++?>
++
++<div class="link-search">
++
++    <?php $form = ActiveForm::begin([
++        'action' => ['index'],
++        'method' => 'get',
++    ]); ?>
++
++    <?= $form->field($model, 'link_id') ?>
++
++    <?= $form->field($model, 'link_url') ?>
++
++    <?= $form->field($model, 'created_at') ?>
++
++    <?= $form->field($model, 'link_status') ?>
++
++    <?= $form->field($model, 'link_hits') ?>
++
++    <?php // echo $form->field($model, 'link_remark') ?>
++
++    <div class="form-group">
++        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
++        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
++    </div>
++
++    <?php ActiveForm::end(); ?>
++
++</div>
+Index: backend/views/link/create.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- backend/views/link/create.php	(revision )
++++ backend/views/link/create.php	(revision )
+@@ -0,0 +1,21 @@
++<?php
++
++use yii\helpers\Html;
++
++
++/* @var $this yii\web\View */
++/* @var $model backend\models\Link */
++
++$this->title = 'Create Link';
++$this->params['breadcrumbs'][] = ['label' => 'Links', 'url' => ['index']];
++$this->params['breadcrumbs'][] = $this->title;
++?>
++<div class="link-create">
++
++    <h1><?= Html::encode($this->title) ?></h1>
++
++    <?= $this->render('_form', [
++        'model' => $model,
++    ]) ?>
++
++</div>

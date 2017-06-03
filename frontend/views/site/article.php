@@ -1,8 +1,11 @@
 <?php
 
 use yii\helpers\Url;
+use frontend\views\site\Comments;
+//use frontend\assets\AppAsset;
 /* @var $this yii\web\View */
 
+//AppAsset::register($this);
 //$this->title = '1';
 // $this->description = isset($site_info['site_name'])?$site_info['site_name']:'My Yii Application';
 
@@ -64,6 +67,7 @@ if (isset($post)) {
                     ?>
 
                 </div>
+                <?= Comments::widget(['id'=>$post['post_id']]) ?>
             </div>
         </div>
     </div>

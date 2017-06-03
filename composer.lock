@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "99ffab28dab2f3820a9c7d6a6c7d2c10",
+    "content-hash": "16a1deeedb490361e5ae698fa38f3a45",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -497,51 +497,6 @@
                 "minify"
             ],
             "time": "2015-09-25T11:13:11+00:00"
-        },
-        {
-            "name": "rmrevin/yii2-minify-view",
-            "version": "1.14.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rmrevin/yii2-minify-view.git",
-                "reference": "1b84c6128bfd11b3e3cd827273efa6aa6ddd7870"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rmrevin/yii2-minify-view/zipball/1b84c6128bfd11b3e3cd827273efa6aa6ddd7870",
-                "reference": "1b84c6128bfd11b3e3cd827273efa6aa6ddd7870",
-                "shasum": ""
-            },
-            "require": {
-                "mrclay/minify": "~2.2",
-                "yiisoft/yii2": "2.0.*"
-            },
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "rmrevin\\yii\\minify\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Revin Roman",
-                    "email": "roman@rmrevin.com",
-                    "homepage": "https://rmrevin.com/"
-                }
-            ],
-            "description": "Yii2 View component with minification css & js",
-            "keywords": [
-                "JS",
-                "css",
-                "minify",
-                "view",
-                "yii2"
-            ],
-            "time": "2017-01-19T16:51:36+00:00"
         },
         {
             "name": "skeeks/yii2-assets-auto-compress",
@@ -1144,6 +1099,51 @@
             ],
             "description": "A comprehensive library for generating differences between two hashable objects (strings or arrays).",
             "time": "2016-04-07T12:29:16+00:00"
+        },
+        {
+            "name": "rmrevin/yii2-minify-view",
+            "version": "1.14.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rmrevin/yii2-minify-view.git",
+                "reference": "1b84c6128bfd11b3e3cd827273efa6aa6ddd7870"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rmrevin/yii2-minify-view/zipball/1b84c6128bfd11b3e3cd827273efa6aa6ddd7870",
+                "reference": "1b84c6128bfd11b3e3cd827273efa6aa6ddd7870",
+                "shasum": ""
+            },
+            "require": {
+                "mrclay/minify": "~2.2",
+                "yiisoft/yii2": "2.0.*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "rmrevin\\yii\\minify\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Revin Roman",
+                    "email": "roman@rmrevin.com",
+                    "homepage": "https://rmrevin.com/"
+                }
+            ],
+            "description": "Yii2 View component with minification css & js",
+            "keywords": [
+                "JS",
+                "css",
+                "minify",
+                "view",
+                "yii2"
+            ],
+            "time": "2017-01-19T16:51:36+00:00"
         },
         {
             "name": "yiisoft/yii2-codeception",

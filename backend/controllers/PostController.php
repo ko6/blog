@@ -167,7 +167,7 @@ class PostController extends Controller
             if ( $model->save()) {
                 return $this->redirect(['view', 'id' => $model->post_id]);
             } else {
-               var_dump($model->errors);
+//               var_dump($model->errors);
                 echo '<script> alert("编辑失败");history.go(-1);</script>';
             }
         } else {

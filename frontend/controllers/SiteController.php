@@ -14,6 +14,7 @@ use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use backend\models\SiteInfo;
 use backend\models\Post;
+use backend\models\Comment;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -119,6 +120,12 @@ class SiteController extends Controller
 
     public function actionC($id)
     {
+        //$_COOKIE['comment_id']) 一个用于标识评论发布作者的字串
+        if(empty($_COOKIE['comment_id'])){
+            $comment_id = self::guid();
+            setcookie('comment_id',$comment_id,time()+3600,'/');
+        }
+
       $post = Post::find()->where(['post_category'=>$id,'post_status'=>"1"])
           ->select('post_pic,post_title,post_id,post_url_name,post_tips,post_hits,post_excerpt,created_at')
           ->orderby("created_at desc")
@@ -161,6 +168,93 @@ class SiteController extends Controller
             ]);
         }
 
+
+
+    }
+
+
+    /**
+     * 保存评论信息
+     * @return string
+     */
+    public function actionComments()
+    {
+        $model =new Comment();
+
+        $p = Yii::$app->request->post();
+        $t='';
+        //保存状态，1：保存成功
+        $status='';
+
+        if ($model->load($p)){
+          print_r (var_dump($model->attributes));
+            //检测数据合法性
+            var_dump(is_int("1.1"*1));
+            var_dump(is_numeric("1.1"));
+            var_dump("1">0);
+            var_dump("-1">0);
+            /*[['comment_father_id', 'comment_post_id', 'comment_status', 'comment_link_id'], 'integer'],
+            [['comment_post_id', 'comment_status', 'comment_name', 'comment_email', 'comment_content'], 'required'],
+            [['comment_content'], 'string'],
+            [['comment_name', 'comment_ip'], 'string', 'max' => 50],
+            [['comment_email'], 'string', 'max' => 99],
+*/
+            //comment_post_id 正整数
+            if(!(is_numeric($model->comment_post_id)&&is_int($model->comment_post_id*1)&&$model->comment_post_id>0)){
+                $t='文章信息错误';
+                $status='0';
+                return "{\"status\":$status,\"t\":$t}";
+            } elseif (empty($model->comment_name)){
+                $t='你的名字不能为空';
+                $status='0';
+                return "{\"status\":$status,\"t\":$t}";
+            } elseif (empty($model->comment_content)){
+                $t='评论内容不能为空';
+                $status='0';
+                return "{\"status\":$status,\"t\":$t}";
+            } elseif (empty($model->comment_email)){
+                $t='邮件地址不能为空';
+                $status='0';
+                return "{\"status\":$status,\"t\":$t}";
+            }
+
+
+            //$_COOKIE['comment_id']) 一个用于验证评论作者的字串
+            //作者可以看到自己发布的未通过审核的回复内容
+            //TODO 测试cookie长期有效的效果
+            if(empty($_COOKIE['comment_id'])){
+                $comment_id = self::guid();
+                setcookie('comment_id',$comment_id,time()+3600,'/');
+                $model->comment_ip=$comment_id;
+            } else {
+                $model->comment_ip=$_COOKIE['comment_id'];
+            }
+
+
+
+            //todo 将链接转换为id
+            $model->comment_link_id=1;
+
+
+            //置状态为待审核
+            $model->comment_status=0;
+            if ( $model->save()){
+                //保存成功
+                $t= "";
+                $status='1';
+                return "{\"status\":$status,\"t\":$t}";
+            } else {
+               //保存失败
+                $t= $model->errors;
+                $status='0';
+                return "{\"status\":$status,\"t\":$t}";
+            }
+
+        }else{
+            $t= "加载提交信息失败";
+            $status='0';
+            return "{\"status\":$status,\"t\":$t}";
+        }
 
 
     }
@@ -300,4 +394,23 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    static public function guid(){
+        if (function_exists('com_create_guid')){
+            return com_create_guid();
+        }else{
+            mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+            $charid = strtoupper(md5(uniqid(rand(), true)));
+            $hyphen = chr(45);// "-"
+            $uuid = chr(123)// "{"
+                .substr($charid, 0, 8).$hyphen
+                .substr($charid, 8, 4).$hyphen
+                .substr($charid,12, 4).$hyphen
+                .substr($charid,16, 4).$hyphen
+                .substr($charid,20,12)
+                .chr(125);// "}"
+            return $uuid;
+        }
+    }
+
 }
