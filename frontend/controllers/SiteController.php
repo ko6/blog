@@ -101,7 +101,7 @@ class SiteController extends Controller
           throw new NotFoundHttpException('The requested page does not exist.');
       }
 
-      var_dump($post->created_at);
+//      var_dump($post->created_at);
 
       $post->post_hits += 1;
       $post->save();

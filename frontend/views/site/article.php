@@ -5,12 +5,6 @@ use frontend\views\site\comments;
 //use frontend\assets\AppAsset;
 /* @var $this yii\web\View */
 
-//AppAsset::register($this);
-//$this->title = '1';
-// $this->description = isset($site_info['site_name'])?$site_info['site_name']:'My Yii Application';
-
-// var_dump($post);
-//backend\models\Tips::set_tips("1|2|4|2|1|5|4");
 if (isset($post)) {
     //有相关文章信息  # code...
 
