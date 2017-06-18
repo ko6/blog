@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Url;
-use frontend\views\site\Comments;
+use frontend\views\site\comments;
 //use frontend\assets\AppAsset;
 /* @var $this yii\web\View */
 
@@ -67,7 +67,7 @@ if (isset($post)) {
                     ?>
 
                 </div>
-                <?= Comments::widget(['id'=>$post['post_id']]) ?>
+                <?= comments::widget(['id'=>$post['post_id']]) ?>
             </div>
         </div>
     </div>
