@@ -40,7 +40,7 @@ class Comment extends \yii\db\ActiveRecord
             [['comment_post_id', 'comment_status', 'comment_name', 'comment_email', 'comment_content'], 'required'],
             [['comment_content'], 'string'],
             [['comment_name', 'comment_ip'], 'string', 'max' => 50],
-            [['comment_email'], 'string', 'max' => 99],
+            [['comment_email','comment_link'], 'string', 'max' => 99],
         ];
     }
 

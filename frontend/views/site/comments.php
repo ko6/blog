@@ -17,7 +17,7 @@ class Comments extends \yii\widgets\ActiveForm
 
     public $id=null;
 
-    public $comment_head="<div id=title><h3>评论</h3></div>
+    public $comment_head="<div id=title style='border-top: 1px outset; margin-top: 100px;'><h3>评论</h3></div>
 <button type=\"button\" class=\"btn  btn-sm btn-default\" style='float: right;margin-top: -35px;' data-toggle=\"modal\" data-target=\"#commentsModal\"
                             data-whatever=\"\"><i class=\"fa fa-commenting\" style=' font-size: 16px;'></i> 发表评论
                     </button>
@@ -200,7 +200,7 @@ stye;
                 echo '<ul>';
 
 
-                if(array_key_exists($c['comment_id'],$comment_group)){
+                if(isset($comment_group) && array_key_exists($c['comment_id'],$comment_group)){
 //                  再输出该评论下的子级评论
                     foreach($comment_group[$c['comment_id']] as $d){
                         echo '<li>';
@@ -225,24 +225,6 @@ stye;
             }
 
         }
-//        for($i=0;$i<$k;$i++){
-//
-//            echo '<li>';
-//            echo $this->comment_content;
-//            echo '<ul>';
-//            $l=mt_rand(0,3);
-//            for($j=0;$j<$l;$j++){
-//                echo '<li>';
-//                echo $this->comment_content;
-//                echo '</li>';
-//            }
-//            echo '<li>';
-//            echo $this->comment_reply;
-//            echo '</li></ul>';
-//
-//
-//            echo '</li>';
-//        }
 
         //输出评论区尾部代码
         echo $this->comment_foot;
