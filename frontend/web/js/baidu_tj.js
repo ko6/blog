@@ -5,7 +5,7 @@
 var _hmt = _hmt || [];
 (function() {
     var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?f959fdfa31f0fe1f654eec1f7c263527";
+    hm.src = "https://hm.baidu.com/hm.js?379b3f15fbf73cc99346a358c04e4ca9";
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
 })();
