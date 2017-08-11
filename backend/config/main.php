@@ -13,9 +13,11 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'defaultRoute'=>'post',
+    'homeUrl'   =>  '/',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'baseUrl'=>'',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -44,14 +46,13 @@ return [
                 'enabled'                       => false,
             ],
 
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+
         ],
-        */
+        
     ],
     'params' => $params,
 ];
