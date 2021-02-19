@@ -927,17 +927,17 @@
     },
     {
         "name": "tedivm/jshrink",
-        "version": "v1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "v1.4.0",
+        "version_normalized": "1.4.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/tedious/JShrink.git",
-            "reference": "688527a2e854d7935f24f24c7d5eb1b604742bf9"
+            "reference": "0513ba1407b1f235518a939455855e6952a48bbc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/tedious/JShrink/zipball/688527a2e854d7935f24f24c7d5eb1b604742bf9",
-            "reference": "688527a2e854d7935f24f24c7d5eb1b604742bf9",
+            "url": "https://api.github.com/repos/tedious/JShrink/zipball/0513ba1407b1f235518a939455855e6952a48bbc",
+            "reference": "0513ba1407b1f235518a939455855e6952a48bbc",
             "shasum": "",
             "mirrors": [
                 {
@@ -947,14 +947,14 @@
             ]
         },
         "require": {
-            "php": ">=5.3.0"
+            "php": "^5.6|^7.0|^8.0"
         },
         "require-dev": {
-            "fabpot/php-cs-fixer": "0.4.0",
-            "phpunit/phpunit": "4.0.*",
-            "satooshi/php-coveralls": "dev-master"
+            "friendsofphp/php-cs-fixer": "^2.8",
+            "php-coveralls/php-coveralls": "^1.1.0",
+            "phpunit/phpunit": "^6"
         },
-        "time": "2015-07-04T07:35:09+00:00",
+        "time": "2020-11-30T18:10:21+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -977,6 +977,12 @@
         "keywords": [
             "javascript",
             "minifier"
+        ],
+        "funding": [
+            {
+                "url": "https://tidelift.com/funding/github/packagist/tedivm/jshrink",
+                "type": "tidelift"
+            }
         ]
     },
     {
