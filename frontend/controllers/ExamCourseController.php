@@ -33,16 +33,16 @@ class ExamCourseController extends Controller
      * Lists all ExamCourse models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        $searchModel = new ExamCourseSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    // public function actionIndex()
+    // {
+    //     $searchModel = new ExamCourseSearch();
+    //     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    //     return $this->render('index', [
+    //         'searchModel' => $searchModel,
+    //         'dataProvider' => $dataProvider,
+    //     ]);
+    // }
 
     public function beforeAction($action)
     {
@@ -119,6 +119,11 @@ class ExamCourseController extends Controller
 
     public function actionShow($id='',$name="")
     {
+        if (Yii::$app->user->isGuest) {
+            echo '还没登录';
+            return;
+        } 
+
         if ($id == "" && $name == "") {
             return '{"state":500,err:"未找到相关课程"}';
         }
@@ -232,30 +237,30 @@ class ExamCourseController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+    // public function actionView($id)
+    // {
+    //     return $this->render('view', [
+    //         'model' => $this->findModel($id),
+    //     ]);
+    // }
 
     /**
      * Creates a new ExamCourse model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new ExamCourse();
+    // public function actionCreate()
+    // {
+    //     $model = new ExamCourse();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->id]);
+    //     } else {
+    //         return $this->render('create', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
 
     /**
      * Updates an existing ExamCourse model.
@@ -263,18 +268,18 @@ class ExamCourseController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+    // public function actionUpdate($id)
+    // {
+    //     $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         return $this->redirect(['view', 'id' => $model->id]);
+    //     } else {
+    //         return $this->render('update', [
+    //             'model' => $model,
+    //         ]);
+    //     }
+    // }
 
     /**
      * Deletes an existing ExamCourse model.
@@ -282,12 +287,12 @@ class ExamCourseController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+    // public function actionDelete($id)
+    // {
+    //     $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+    //     return $this->redirect(['index']);
+    // }
 
     /**
      * Finds the ExamCourse model based on its primary key value.
