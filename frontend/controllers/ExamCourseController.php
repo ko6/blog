@@ -223,13 +223,28 @@ class ExamCourseController extends Controller
             return    ExamResult::checkResult2($json['cookie'],$json['score']);
         }else if($json['type']==3){
             return    ExamResult::checkResult3($json['cookie'],$json['result']);
+        } else if ($json['type'] == 11) {
+            //此请求为多个题目选项的集合
+            $results=[];
+            $is_success = false;
+            foreach($json as $key=>$value){
+                if($key!="type"){
+                    $results[$key] = ExamResult::checkResult1($value['c_id'], $value['q_id'], $value['checked_value'], $value['value'], $value['cookie'], $value['index']);
+                    if(!$is_success && $results[$key] == '{"state":200,"msg":"ok"}'){
+                        //暂且认为有一次成功就是全部成功
+                        $is_success = true;
+                    }
+
+                }
+            }
+            $is_success?$results['state']=200: $results['state'] = 0;
+            return json_encode($results);
+
         }
 
 //        return json_encode($json);
 
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        return ;
     }
 
     /**

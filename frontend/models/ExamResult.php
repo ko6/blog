@@ -75,7 +75,8 @@ class ExamResult extends \yii\db\ActiveRecord
     }
 
         public static  function  checkResult1($course_id,$question_id,$checked_value,$value,$cookie,$index){
-
+// todo 记录选择答案时，先将之前选择的内容禁用，再新增新的记录。只取一条记录来比较，会在高并发场景下出现异常。  20220904
+// 比如多选题，快速选择多个答案，因为处理速度慢，数据库里可能存在多个有效答案。前端改为定时请求后，能有效减少此问题。
         //$this::findOne(id)->where($this->name=$name)
 
         $i = ExamResult::find()->where(["course_id"=>$course_id,"question_id"=>$question_id,"cookie"=>$cookie,"state"=>1])->one();
@@ -92,7 +93,7 @@ class ExamResult extends \yii\db\ActiveRecord
             $model->index = $index;
 //            var_dump( $model -> save());
            if( $model -> save()){
-               return '{"state":200,"msg":"add success"}';
+               return '{"state":200,"msg":"ok"}';
            }else{
                var_dump($model->errors);
                exit;
