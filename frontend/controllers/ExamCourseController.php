@@ -228,7 +228,7 @@ class ExamCourseController extends Controller
             $results=[];
             $is_success = false;
             foreach($json as $key=>$value){
-                if($key!="type"){
+                if($key!="type" && $key!= "cookie"){
                     $results[$key] = ExamResult::checkResult1($value['c_id'], $value['q_id'], $value['checked_value'], $value['value'], $value['cookie'], $value['index']);
                     if(!$is_success && $results[$key] == '{"state":200,"msg":"ok"}'){
                         //暂且认为有一次成功就是全部成功
