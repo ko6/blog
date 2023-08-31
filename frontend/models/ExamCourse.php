@@ -53,26 +53,28 @@ class ExamCourse extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function  checkCoureName($name,$info=""){
+    public static function  checkCourseName($name, $info = "", $remark = "")
+    {
 
         //$this::findOne(id)->where($this->name=$name)
-//        var_dump($name,$info);exit;
-            $i = ExamCourse::find()->where(['=','name',$name])->select("id")->asArray()->one();
-       if(NUll==$i){
-           $model = new ExamCourse();
-           $model->name = $name;
-           $model->info = $info;
+        //        var_dump($name,$info);exit;
+        $i = ExamCourse::find()->where(['=', 'name', $name])->select("id")->asArray()->one();
+        if (NUll == $i) {
+            $model = new ExamCourse();
+            $model->name = $name;
+            $model->info = $info;
+            $model->remark = $remark;
 
-           if(!$model -> save()){
-               var_dump($model->errors);
-               exit();
-           };
-          return $model->id;
-       }else{
-           return $i['id'];
-       }
+            if (!$model->save()) {
+                var_dump($model->errors);
+                exit();
+            };
+            return $model->id;
+        } else {
+            return $i['id'];
+        }
 
-                //ScoreTime::find()->where(['in','status',[self::active_status_1,self::active_status_2]])->asArray()->one();
+        //ScoreTime::find()->where(['in','status',[self::active_status_1,self::active_status_2]])->asArray()->one();
 
     }
 }

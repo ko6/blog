@@ -13,9 +13,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ExamCourseController implements the CRUD actions for ExamCourse model.
+ * 知学云平台课程记录相关方法 
+ * 2023/8/20
  */
-class ExamCourseController extends Controller
+class ExamZxyController extends Controller
 {
     public function behaviors()
     {
@@ -47,73 +48,92 @@ class ExamCourseController extends Controller
     public function beforeAction($action)
     {
         header('Access-Control-Allow-Origin:*');
-        header('Access-Control-Allow-Credentials:true');
+        // header('Access-Control-Allow-Credentials:true');
+        // header('Access-Control-Allow-Private-Network:true');
+        header('Access-Control-Allow-Headers:*');
         $this->enableCsrfValidation = false;
+        if (Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
+            exit;
+        }
         return parent::beforeAction($action);
     }
 
-
+    /**
+     * @description: 保存题目（和答案），返回选项的答题记录
+     * @return {*}
+     * @author: koko
+     */
     public function actionCheck()
     {
-        //{"name":"软件开发服务试题","info":"满分：100，100分合格，共10题，可考5次次，考试限时：不限时","question":[{"name":"以下哪种不属于软件开发服务产品架构的？","questionid":"63934fce-94ac-48c2-bbfe-b5aa5e1a5519","qid":"071a0b20-04f7-43d7-a23e-9c85605b33c0","option":["流程层","数据层","工具层","决策层"]},{"name":"以下哪个构建类型不是软件开发服务的构建功能中的？","questionid":"af2f9c9f-71e0-4442-b4ff-197089723e63","qid":"dbdf035e-9791-4834-b35b-172df9663091","option":["从源代码构建程序包","从程序包构建镜像","从构件构建镜像","从源代码构建镜像"]},{"name":"以下哪个功能模块不是浪潮云软件开发服务的？","questionid":"b3126cb8-a928-4744-b3d9-8d039f227fbe","qid":"6dfb76bf-e9c5-4903-a199-ab022f3f8357","option":["代码扫描","代码检查","代码托管","流水线"]},{"name":"以下哪种任务类型可以放在流水线功能中的第一阶段？","questionid":"51df4670-a665-48ab-a2e1-93e39a38962a","qid":"d4df6d9c-33bc-41c2-b250-7a69c706b007","option":["添加git标签","代码检查","构建","分支合并"]},{"name":"以下哪种触发方式不是软件开发服务产品的构建功能中的触发方式？","questionid":"8b0b3d4b-5bab-4d51-8011-84358021f6fc","qid":"3628be0a-20e8-4607-ab22-1260c62bbd6f","option":["手动出发","定时检查","Git事件触发","自动触发"]},{"name":"以下哪个选项是属于软件开发服务产品的销售价值？","questionid":"23ffe357-5044-4710-8c8b-cb98ea64f636","qid":"e841277f-3129-4f7c-b383-7a79538f74e5","option":["粘性升级","差异化竞争","资源折扣","资源带动"]},{"name":"以下哪个选项是属于软件开发服务的应用数据可视化的功能模块？","questionid":"55dad37b-c7ff-4066-9fc3-1a2aaa9cdcf7","qid":"3d3426e3-421f-43d2-a0f1-735d7b27ed4f","option":["运维看板","项目看板","质量看板","开发看板"]},{"name":"以下哪种属于软件开发服务的应用自动化发布策略？","questionid":"38581a1a-25b9-4c4e-a48e-380b8bbf3354","qid":"1bc0c91a-e144-4ac0-82dd-098945a869bd","option":["灰度发布","AB测试","滚动发布","蓝绿发布"]},{"name":"以下哪个选项是属于软件开发服务的支持体系？","questionid":"80f42a61-3229-44d8-bfd2-c3091233fccb","qid":"bc802dec-8a05-44da-9467-661e08721113","option":["开放体验、免费试用","架构设计、上云指导","线上资料、线下支持"]},{"name":"浪潮云软件开发服务产品可以集成的源代码库有哪些？","questionid":"b3fa99c9-0343-4de3-89b6-0d9b17ec5192","qid":"7d0326c7-8871-4c2f-a323-5b00599284e0","option":["Gitea","GitHub","码云","GitLab"]}]}
-        //        return(Yii::$app->request->post("s","1"));
-        $json = Yii::$app->request->post();
-        //   var_dump($json);
-        //        var_dump($json['question'][1]['name']);
-        //        var_dump(Yii::$app->request->get());
-        //        var_dump(Yii::$app->request->params("q"));
-        //   exit();
-        //        $json = json_decode($q);
 
-        //        var_dump(ExamCourse::checkCoureName("1"));
-        //        var_dump($json->question);
-        //        var_dump(ob_get_length($json->question));
-        $coure_id = ExamCourse::checkCourseName($json['name'], $json['info']);
-        //        var_dump('$coure_id='.$coure_id);
-        $json['coure_id'] = $coure_id;
-        $c = count($json['question']);
+        $json = Yii::$app->request->post("data");
+        //    return $json;
+        //    return json_encode($json);
+        // var_dump(urldecode($json));
+        // exit;   
+        $json = json_decode(urldecode($json), true);
+
+        // var_dump($json); 
+        // exit;
+        $result = []; //记录各题目各选项选择的统计结果
+
+        $coure_id = ExamCourse::checkCourseName($json['examName'], $json['examInfo'], $json['examid']);
+        //    var_dump('$coure_id='.$coure_id);
+        // $json['coure_id']=$coure_id;
+        // exit;
+        $c = count($json['questions']);
+
         for ($i = 0; $i < $c; $i++) {
-            //   var_dump($json['question'][$i]);
-            // return;
+            //    var_dump($json['questions'][$i]);
+            //    return;
 
-            $question_id = ExamQuestion::checkQuestionName($json['question'][$i]['name'], $json['question'][$i]['questionid'], $json['question'][$i]['qid'], $coure_id, $json['question'][$i]['type']);
-            //            var_dump('$question_id='.$question_id);
-            //continue;
+            $questionId = null; //20230831 这个参数只出现在考卷中，在考试结果的卷面中没有。还没有理解它的真实用途。考虑可以移除。
+            if (isset($json['questions'][$i]['questionId'])) {
+                $questionId =   isset($json['questions'][$i]['questionId']);
+            }
+            $question_id = ExamQuestion::checkQuestionName(
+                $json['questions'][$i]['content'],
+                $questionId,
+                $json['questions'][$i]['id'],
+                $coure_id,
+                $json['questions'][$i]['type']
+            );
 
-            $json['question'][$i]["question_id"] = $question_id;
-            $d = count($json['question'][$i]['option']);
-            //            $json['question'][$i]['id']=$question_id;
+            $result[$json['questions'][$i]['id']] = []; //将当前题目，插入返回结果中
+            $d = count($json['questions'][$i]['questionAttrCopys']);
+            //            $json['questions'][$i]['id']=$question_id;
 
             for ($j = 0; $j < $d; $j++) {
                 //break;
                 //保存选项，并查询选项的历史记录。
-                $k = ExamOption::checkOptionName($json['question'][$i]['option'][$j][0], $question_id, $coure_id, $json['question'][$i]['type'], $json['question'][$i]['name']);
+                //20230830 此环节同步保存答案(如果有) 有答案的数据中没有questionCopyId参数，需要单独判断下
+                $questionCopyId = null;
+                if (isset($json['questions'][$i]['questionAttrCopys'][$j]['questionCopyId'])) {
+                    $questionCopyId = $json['questions'][$i]['questionAttrCopys'][$j]['questionCopyId'];
+                }
+                $k = ExamOption::checkOptionName(
+                    $json['questions'][$i]['questionAttrCopys'][$j]['value'],
+                    $question_id,
+                    $coure_id,
+                    $json['questions'][$i]['type'],
+                    $json['questions'][$i]['content'],
+                    false,
+                    $json['questions'][$i]['questionAttrCopys'][$j]['id'],
+                    $questionCopyId,
+                    $json['questions'][$i]['questionAttrCopys'][$j]['name'],
+                    $json['questions'][$i]['questionAttrCopys'][$j]['type']
+                );
                 //                var_dump($k);exit;
-                $json['question'][$i]['option'][$j]["c_id"] = $coure_id;
-                $json['question'][$i]['option'][$j]["q_id"] = $question_id;
-                $json['question'][$i]['option'][$j]["c"] = $k[0]["c"];
-                $json['question'][$i]['option'][$j]["r"] = $k[0]["r"];
-                $json['question'][$i]['option'][$j]["w"] = $k[0]["w"];
-                $json['question'][$i]['option'][$j]["s"] = $k[0]["s"];
-                //                echo '<br>';
-                //                var_dump($k);
+                $result[$json['questions'][$i]['id']][$json['questions'][$i]['questionAttrCopys'][$j]['id']] = []; //记录当前选项
 
-
+                $result[$json['questions'][$i]['id']][$json['questions'][$i]['questionAttrCopys'][$j]['id']]["c"] = $k[0]["c"];
+                $result[$json['questions'][$i]['id']][$json['questions'][$i]['questionAttrCopys'][$j]['id']]["r"] = $k[0]["r"];
+                $result[$json['questions'][$i]['id']][$json['questions'][$i]['questionAttrCopys'][$j]['id']]["w"] = $k[0]["w"];
+                $result[$json['questions'][$i]['id']][$json['questions'][$i]['questionAttrCopys'][$j]['id']]["s"] = $k[0]["s"];
             }
         }
-        //        exit;
-        //        $json['result']= ExamResult::getResult($coure_id);
-        //        $json['name']="123";
 
-        //var_dump($json['question'], json_encode($json['question'],JSON_UNESCAPED_UNICODE));
-        return json_encode($json['question'], JSON_UNESCAPED_UNICODE);
-        //        $searchModel = new ExamCourseSearch();
-        //        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //
-        //        return $this->render('index', [
-        //            'searchModel' => $searchModel,
-        //            'dataProvider' => $dataProvider,
-        //        ]);
+        return json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 
 
@@ -186,43 +206,99 @@ class ExamCourseController extends Controller
         ]);
     }
 
+    /**
+     * @description: 记录考试结果和考试题目
+     * type:1 查询答案      2保存题目
+     * 
+     * @return {*}
+     * @author: koko
+     */
     public function actionResult()
     {
 
-        //['co'] 'course_id' => 'Course ID',
-        // 'question_id' => 'Question ID',
-        //     'checked_value' => 'Checked Value',
-        //     'value' => 'Value',
-        //     'result' => 'Result',
-        //     'remark' => 'Remark',
-        //     'cookie' => 'Cookie',
-        $json = Yii::$app->request->post();
-        //        return $json;
-        //        return json_encode($json);
+        $json = Yii::$app->request->post("data");
+        //    return $json;
+        //    return json_encode($json);
+        // var_dump(urldecode($json));
+        // exit;   
+        $json = json_decode(urldecode($json), true);
+        //     var_dump(isset($json['type'])); 
+        //     var_dump(isset($json->type)); 
+        // var_dump($json); 
         //        return ExamResult::checkResult1(1,1,"1","1","1",1,1,1);
-        if (!isset($json['cookie']) || !isset($json['type'])) {
+        if (!isset($json['cookie']) && !isset($json['type'])) {
             return '{"state":505,"msg":"未授权访问"}';
         }
 
         if ($json['type'] == 1) {
+            //传入题目id,查询题目参考答案.
+
+
+            //先查询并保存考试科目
+            // var_dump($json['questionCopyIds']);
+
+            $result = []; //保存查询结果。 结果格式如下：
+            // key(问题id)=>state   0 未同步   1 已同步
+            // key(问题id)[答案id]=>c 选择次数
+            // key(问题id)[答案id]=>r 正确次数
+            // key(问题id)[答案id]=>w 错误次数
+            // key(问题id)[答案id]=>s 最高得分
+
+            for ($i = 0; $i < count($json['questionCopyIds']); $i++) {
+                //先查询问题id
+                $qId = $json['questionCopyIds'][$i];
+                $result[$qId] = []; //记录当前题目状态
+
+                $question_id = ExamQuestion::findIdByQid($qId);
+
+                if ($question_id == null) {
+                    $result[$qId]['state'] = 0; //没找到问题
+                } else {
+                    $result[$qId]['state'] = 1; //找到了问题
+                    $result[$qId]['result'] = ExamResult::getResultByQuestionIid($question_id); //查找问题的答题记录
+
+
+                }
+            }
+
+
+            return json_encode($result);
+
+
+
+
+            exit;
+
+
+            $coure_id =  ExamCourse::checkCourseName($json['examName'], $json['examInfo'], $json['examid']);
+
+            var_dump($coure_id);
+
             //checkResult1($course_id,$question_id,$checked_value,$value,$cookie,$index){
             //   $c = ExamQuestion::find()->where(["questionid"=>$json['question_id']])->select(["course_id","id"])->asArray()->one();
             //            var_dump($json['qid'],$c);exit;
             //
 
+            return ExamResult::getResult($coure_id);
+
             //            var_dump($c["id"],$c['course_id'],$json['checked_value'],$json['value'],$json['cookie'],$json['index']);
-            return    ExamResult::checkResult1($json['c_id'], $json['q_id'], $json['checked_value'], $json['value'], $json['cookie'], $json['index']);
+            // return    ExamResult::checkResult1($json['c_id'],$json['q_id'],$json['checked_value'],$json['value'],$json['cookie'],$json['index']);
             //            exit;
 
         } else if ($json['type'] == 2) {
-            return    ExamResult::checkResult2($json['cookie'], $json['score']);
+            //传入答题详情，记录答题情况
+
+            return    ExamResult::checkResult_zxy2($json);
         } else if ($json['type'] == 3) {
-            return    ExamResult::checkResult3($json['cookie'], $json['result']);
+            //20230831 更新考试成绩
+            return    ExamResult::checkResult2($json['cookie'], $json['score']);
         }
 
         //        return json_encode($json);
 
-        return;
+        // return $this->render('view', [
+        //     'model' => $this->findModel($id),
+        // ]);
     }
 
     /**
