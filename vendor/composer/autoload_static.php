@@ -16,6 +16,7 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         array (
             'yii\\swiftmailer\\' => 16,
             'yii\\jui\\' => 8,
+            'yii\\httpclient\\' => 15,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
@@ -27,10 +28,6 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         's' => 
         array (
             'skeeks\\yii2\\assetsAuto\\' => 23,
-        ),
-        'r' => 
-        array (
-            'rmrevin\\yii\\minify\\' => 19,
         ),
         'm' => 
         array (
@@ -63,6 +60,10 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-jui',
         ),
+        'yii\\httpclient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-httpclient/src',
+        ),
         'yii\\gii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-gii',
@@ -93,11 +94,7 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
         ),
         'skeeks\\yii2\\assetsAuto\\' => 
         array (
-            0 => __DIR__ . '/..' . '/skeeks/yii2-assets-auto-compress',
-        ),
-        'rmrevin\\yii\\minify\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/rmrevin/yii2-minify-view',
+            0 => __DIR__ . '/..' . '/skeeks/yii2-assets-auto-compress/src',
         ),
         'mdm\\admin\\' => 
         array (
@@ -147,6 +144,7 @@ class ComposerStaticInit53f573278c49f2f582140e43527a99f4
 
     public static $classMap = array (
         'CSSmin' => __DIR__ . '/..' . '/mrclay/minify/min/lib/CSSmin.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'CssAtCharsetParserPlugin' => __DIR__ . '/..' . '/natxet/CssMin/src/CssMin.php',
         'CssAtCharsetToken' => __DIR__ . '/..' . '/natxet/CssMin/src/CssMin.php',
         'CssAtFontFaceDeclarationToken' => __DIR__ . '/..' . '/natxet/CssMin/src/CssMin.php',
