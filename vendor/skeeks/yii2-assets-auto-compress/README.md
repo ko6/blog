@@ -6,10 +6,9 @@ This allows you to improve the performance of google page speed.
 
 This tool only works on real sites. On the local projects is not working!
 
-[![Latest Stable Version](https://poser.pugx.org/skeeks/yii2-assets-auto-compress/v/stable.png)](https://packagist.org/packages/skeeks/yii2-assets-auto-compress)
-[![Total Downloads](https://poser.pugx.org/skeeks/yii2-assets-auto-compress/downloads.png)](https://packagist.org/packages/skeeks/yii2-assets-auto-compress)
-[![Reference Status](https://www.versioneye.com/php/skeeks:yii2-assets-auto-compress/reference_badge.svg)](https://www.versioneye.com/php/skeeks:yii2-assets-auto-compress/references)
-[![Dependency Status](https://www.versioneye.com/php/skeeks:yii2-assets-auto-compress/dev-master/badge.png)](https://www.versioneye.com/php/skeeks:yii2-assets-auto-compress/dev-master)
+[![Latest Stable Version](https://img.shields.io/packagist/v/skeeks/yii2-assets-auto-compress.svg)](https://packagist.org/packages/skeeks/yii2-assets-auto-compress)
+[![Total Downloads](https://img.shields.io/packagist/dt/skeeks/yii2-assets-auto-compress.svg)](https://packagist.org/packages/skeeks/yii2-assets-auto-compress)
+
 
 Installation
 ------------
@@ -54,44 +53,55 @@ How to use
 ```php
 //App config with all options
 [
-    'bootstrap'    => ['assetsAutoCompress'],
-    'components'    =>
-    [
-    //....
-        'assetsAutoCompress' =>
-        [
-            'class'                         => '\skeeks\yii2\assetsAuto\AssetsAutoCompressComponent',
-            'enabled'                       => true,
+    'bootstrap'  => ['assetsAutoCompress'],
+    'components' => [
+        //....
+        'assetsAutoCompress' => [
+            'class'   => '\skeeks\yii2\assetsAuto\AssetsAutoCompressComponent',
+            'enabled' => true,
+
+            'readFileTimeout' => 3,           //Time in seconds for reading each asset file
+
+            'jsCompress'                => true,        //Enable minification js in html code
+            'jsCompressFlaggedComments' => true,        //Cut comments during processing js
+
+            'cssCompress' => true,        //Enable minification css in html code
             
-            'readFileTimeout'               => 3,           //Time in seconds for reading each asset file
-            
-            'jsCompress'                    => true,        //Enable minification js in html code
-            'jsCompressFlaggedComments'     => true,        //Cut comments during processing js
-            
-            'cssCompress'                   => true,        //Enable minification css in html code
-            
-            'cssFileCompile'                => true,        //Turning association css files
-            'cssFileRemouteCompile'         => false,       //Trying to get css files to which the specified path as the remote file, skchat him to her.
-            'cssFileCompress'               => true,        //Enable compression and processing before being stored in the css file
-            'cssFileBottom'                 => false,       //Moving down the page css files
-            'cssFileBottomLoadOnJs'         => false,       //Transfer css file down the page and uploading them using js
-            
+            'cssFileCompile'        => true,        //Turning association css files
+            'cssFileCompileByGroups' => false       //Enables the compilation of files in groups rather than in a single file. Works only when the $cssFileCompile option is enabled
+            'cssFileRemouteCompile' => false,       //Trying to get css files to which the specified path as the remote file, skchat him to her.
+            'cssFileCompress'       => true,        //Enable compression and processing before being stored in the css file
+            'cssFileBottom'         => false,       //Moving down the page css files
+            'cssFileBottomLoadOnJs' => false,       //Transfer css file down the page and uploading them using js
+
             'jsFileCompile'                 => true,        //Turning association js files
+            'jsFileCompileByGroups'         => false        //Enables the compilation of files in groups rather than in a single file. Works only when the $jsFileCompile option is enabled
             'jsFileRemouteCompile'          => false,       //Trying to get a js files to which the specified path as the remote file, skchat him to her.
             'jsFileCompress'                => true,        //Enable compression and processing js before saving a file
             'jsFileCompressFlaggedComments' => true,        //Cut comments during processing js
-            
-            'htmlCompress'                  => true,        //Enable compression html
-            'noIncludeJsFilesOnPjax'        => true,        //Do not connect the js files when all pjax requests
-            'htmlCompressOptions'           =>              //options for compressing output result
-            [
-                'extra' => false,        //use more compact algorithm
-                'no-comments' => true   //cut all the html comments
-            ],     
+
+            'noIncludeJsFilesOnPjax' => true,        //Do not connect the js files when all pjax requests when all pjax requests when enabled jsFileCompile
+            'noIncludeCssFilesOnPjax' => true,        //Do not connect the css files when all pjax requests when all pjax requests when enabled cssFileCompile
+
+            'htmlFormatter' => [
+                //Enable compression html
+                'class'         => 'skeeks\yii2\assetsAuto\formatters\html\TylerHtmlCompressor',
+                'extra'         => false,       //use more compact algorithm
+                'noComments'    => true,        //cut all the html comments
+                'maxNumberRows' => 50000,       //The maximum number of rows that the formatter runs on
+
+                //or
+
+                'class' => 'skeeks\yii2\assetsAuto\formatters\html\MrclayHtmlCompressor',
+
+                //or any other your handler implements skeeks\yii2\assetsAuto\IFormatter interface
+
+                //or false
+            ],
         ],
-    //....
-    ]
-]
+        //....
+    ],
+];
 
 ```
 

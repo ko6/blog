@@ -20,7 +20,7 @@
         "yiisoft/yii2-swiftmailer": "*",
         "mdmsoft/yii2-admin": "~1.0",
         "kucha/ueditor": "*",
-        "skeeks/yii2-assets-auto-compress": "*"
+        "skeeks/yii2-assets-auto-compress": ">=1.4.0"
     },
     "require-dev": {
         "ijackua/yii2-lepture-markdown-editor-widget": "dev-master",
@@ -43,5 +43,11 @@
     },
     "scripts": {
         "post-install-cmd": "php init --env=Development --overwrite=n"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
     }
 }

@@ -1,6 +1,89 @@
 CHANGELOG
 ==============
 
+1.4.5
+-----------------
+ * php 8.2
+
+1.4.4
+-----------------
+ * Variables minifier filter default false
+
+1.4.3.2
+-----------------
+ * Fixed option noIncludeJsFilesOnPjax = true
+ * Add option noIncludeCssFilesOnPjax = true — Do not connect the css files when all pjax requests when enabled cssFileCompile
+
+1.4.3.1
+-----------------
+ * Fixed: https://github.com/skeeks-semenov/yii2-assets-auto-compress/pull/60
+ * Fixed: https://github.com/skeeks-semenov/yii2-assets-auto-compress/issues/59
+ 
+1.4.3
+-----------------
+ * New option cssFileCompileByGroups — Enables the compilation of files in groups rather than in a single file. Works only when the $cssFileCompile option is enabled
+ * New option jsFileCompileByGroups — Enables the compilation of files in groups rather than in a single file. Works only when the $jsFileCompile option is enabled
+ 
+1.4.2
+-----------------
+ * Fixed: https://github.com/skeeks-semenov/yii2-assets-auto-compress/issues/51
+ 
+1.4.1
+-----------------
+ * Logs
+ * JsMinFormatter
+ * CssMinFormatter
+ 
+1.4.0
+-----------------
+ * Use new config!
+ 
+Old config :
+```php
+'assetsAutoCompress' => [
+    'class'   => '\skeeks\yii2\assetsAuto\AssetsAutoCompressComponent',
+    
+    'htmlCompress'                  => true, //Deprecated!!!       
+    'htmlCompressOptions'           =>       //Deprecated!!!       
+    [
+        'extra' => false,      
+        'no-comments' => true 
+    ],   
+],
+```
+
+New config:
+```php
+'assetsAutoCompress' => [
+    'class'   => '\skeeks\yii2\assetsAuto\AssetsAutoCompressComponent',
+    'htmlFormatter' => [
+        //Enable compression html
+        'class'         => 'skeeks\yii2\assetsAuto\formatters\html\TylerHtmlCompressor',
+        'extra'         => false,       //use more compact algorithm
+        'noComments'    => true,        //cut all the html comments
+        'maxNumberRows' => 50000,       //The maximum number of rows that the formatter runs on
+    
+        //or
+    
+        'class' => 'skeeks\yii2\assetsAuto\formatters\html\MrclayHtmlCompressor',
+    
+        //or any other your handler implements skeeks\yii2\assetsAuto\IFormatter interface
+    
+        //or false
+    ],
+],
+```
+ 
+ * New option maxNumberRows in TylerHtmlCompressor — the maximum number of rows that the formatter runs on
+ * Fixed double html conversion
+ * Created skeeks\yii2\assetsAuto\formatters\html\MrclayHtmlCompressor
+ * Created skeeks\yii2\assetsAuto\formatters\html\TylerHtmlCompressor
+ * Added htmlFormatter config option
+ * Deprecated htmlCompressOptions config option
+ * Deprecated htmlCompress config option
+ * Using IFormatter interface
+ * Using stable versions of dependencies
+ 
 1.3.1.2
 -----------------
  * Fixed local read files
