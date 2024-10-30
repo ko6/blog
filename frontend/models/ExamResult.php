@@ -82,7 +82,7 @@ class ExamResult extends \yii\db\ActiveRecord
      * @return {*}
      * @author: koko
      */
-    public static function  addReferenceAnswer($course_id, $question_id, $checked_value, $value, $optionResult)
+    public static function  addReferenceAnswer($course_id, $question_id, $checked_value, $value, $optionResult,$question_type)
     {
         //参考答案的cookie记录为checked_value
         //先判断是否已存在
@@ -100,12 +100,34 @@ class ExamResult extends \yii\db\ActiveRecord
             $result->checked_value = $checked_value;
             $result->value  = $value;
             $result->cookie = $checked_value;
-            if ($optionResult == 1 || $optionResult == 2) { //200230831 疑似多选题目的错误答案标识为2，先添加
-                $result->result = -1; //错误选项
-            } else {
-                $result->result = 1; //正确选项
+            //  * 单选题 题目type:1  选项type 0:正确选项  1:错误选项   
+            //  * 多选题 题目type:2  选项type 0:正确选项  2:错误选项
+            //  * 判断题 题目type:3 只有一个答题项，type 固定为3  value为对针对判断题传入的参数, 1为正确 0为错误
+            //  * 判断题 上一环节已将答案转换为与单选多选相同的规则 0正确  1错误 -1未知  20241030
+
+            if($optionResult == "0"){
+                    $result->result = 1;
+            }else if($optionResult == "1" || $optionResult == "2"){
+                     $result->result = -1;
+            }else{
+                //没有符合预期的正确或者错误答案
             }
+            
             $result->save();
+        }else {
+            $result = ExamResult::find()->where(["checked_value" => $checked_value, "cookie" => $checked_value])->one();
+            if($result->result != 1 && $result->result != -1 && in_array($optionResult,["1","2","0"])){
+                if ($optionResult == "0") {
+                    $result->result = 1;
+                } else if ($optionResult == "1" || $optionResult == "2") {
+                    $result->result = -1;
+                } else {
+                    //没有符合预期的正确或者错误答案
+                }
+
+                $result->save();
+            }
+
         }
         return;
     }

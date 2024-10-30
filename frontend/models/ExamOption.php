@@ -74,8 +74,14 @@ class ExamOption extends \yii\db\ActiveRecord
      * @param null $question_name
      * @param bool|false $read_only 是否只查询（在展示题库时，不存在插入答案的场景，配置为true可以减少数据库读写。）
      * 
-     * @param null $type 知学云的选项对错信息 -1：考卷，未指示对错   1：错误选项   0：正确选项 
+     * @param null $type 
+     * 知学云的选项对错信息 -1：考卷，未指示对错   
+     * 单选题 题目type:1  选项type 0:正确选项  1:错误选项   
+     * 多选题 题目type:2  选项type 0:正确选项  2:错误选项
+     * 判断题 题目type:3 只有一个答题项，type 固定为3  value为对错值  1为正确  0为错误
      * @param null $questionAttrCopyId 知学云的选项id
+     * @param null $result 针对判断题的判断标识 1 该选项正确  -1 该选项错误   0未知  20241030
+     * 
      * @return array|null|\yii\db\ActiveRecord|\yii\db\ActiveRecord[]
      */
     public static  function  checkOptionName(
@@ -88,7 +94,8 @@ class ExamOption extends \yii\db\ActiveRecord
         $questionAttrCopyId = null,
         $questionCopyId = null,
         $value = null,
-        $type = null
+        $type = null,
+        $result = 0
     ) {
 
 
@@ -121,9 +128,24 @@ class ExamOption extends \yii\db\ActiveRecord
         }
 
 
-        //判断是否有答案标识 预期type为1或0
-        if ($type == 1 || $type == 0) {
-            ExamResult::addReferenceAnswer($course_id, $question_id, $questionAttrCopyId, $value, $type);
+        //判断是否有答案标识 没有答案的是-1，其他均有答案
+        //  * 单选题 题目type:1  选项type 0:正确选项  1:错误选项   
+        //  * 多选题 题目type:2  选项type 0:正确选项  2:错误选项
+        //  * 判断题 题目type:3 只有一个答题项，type 固定为3  value为对错值  1为正确  0为错误(在本站记录为 1\0两个选项,并)
+        if ($type != "-1") {
+            //针对判断题,前端会传入result字段用于标明是否正确.1正确  -1错误. 在此转换到$optionResult字段来保存结果.转换为与单选多选同样的规则 0正确  1错误  -1未知  20241030
+            if($type == "3" && $result !=0){
+                // var_dump('$type == "3"');
+                if($result == 1){
+                    $type = "0";
+                }else if($result == -1){
+                    $type = "1";
+                }else{
+                    var_dump("未知的result状态:" . $result);
+                    $type = "-1";
+                }
+            }
+            ExamResult::addReferenceAnswer($course_id, $question_id, $questionAttrCopyId, $value, $type,$question_type);
         }
 
 
@@ -150,6 +172,7 @@ class ExamOption extends \yii\db\ActiveRecord
         //20210108 用like是为了处理多选题，多选的答案是A|B|C 这样的格式
         //20220728 多选用 like \'%'.$name.'%\' 仍存在答案覆盖的问题。比如 中国上海 中包含了 上海
         // 'MultiChoice','SingleChoice','Judge' 对应原云学堂的课程类型    1，2对应知学云的课程类型 预期1是单选，2是多选
+        //3是多选
         if ($question_type == 'SingleChoice' || $question_type == 'Judge') {
             //单选直接用=查询
             //20220728 判断也用=查询
@@ -172,15 +195,24 @@ class ExamOption extends \yii\db\ActiveRecord
                 ->andwhere("checked_value = '$questionAttrCopyId' and state = 1")
                 ->select('count(*) c,count(case when result="1" then 1 else null end) r,count(case when result="-1" then 1 else null end) w,max(score) s')
                 ->asArray()->all();
-        } else {
+        } else if($question_type == 2){
             //20230830 预期是知学云多选查询 关闭尝试以题目名称为依据查询答案。不判断题目id.尝试适配同一题目出现在不同题库中的情况。
             $i = ExamResult::find()
                 ->andWhere("question_id ='$question_id'")
                 ->andwhere("checked_value like '%$questionAttrCopyId%' and state = 1")
                 ->select('count(*) c,count(case when result="1" then 1 else null end) r,count(case when result="-1" then 1 else null end) w,max(score) s')
                 ->asArray()->all();
+        } else if ($question_type == 3) {
+            //20241030 预期是知学云判断查询 
+            $i = ExamResult::find()
+                ->andWhere("question_id ='$question_id'")
+                ->andwhere("value = '$value' and state = 1")
+                ->select('count(*) c,count(case when result="1" then 1 else null end) r,count(case when result="-1" then 1 else null end) w,max(score) s')
+                ->asArray()->all();
+        }else{
+            var_dump("未知的题目类型：". $question_type);
         }
-
+        // var_dump("question_id：" . $question_id."value = ".$value);
         if (!isset($i[0])) {
             $i = [["c" => 0, "r" => 0, "w" => 0, "s" => 0]];
         }

@@ -97,6 +97,14 @@ class ExamZxyController extends Controller
                 if (isset($json['questions'][$i]['questionAttrCopys'][$j]['questionCopyId'])) {
                     $questionCopyId = $json['questions'][$i]['questionAttrCopys'][$j]['questionCopyId'];
                 }
+                //针对判断题,前端传入一个result字段,用于标明该选项是否正确. 1正确  -1错误 20241030
+                if(!isset($json['questions'][$i]['questionAttrCopys'][$j]['result'])){
+                    // 如果未设置,置为空
+                    $questionAttrCopys_result = 0;
+                }else{
+                    $questionAttrCopys_result = $json['questions'][$i]['questionAttrCopys'][$j]['result'];
+
+                }
                 $k = ExamOption::checkOptionName(
                     $json['questions'][$i]['questionAttrCopys'][$j]['value'],
                     $question_id,
@@ -107,7 +115,8 @@ class ExamZxyController extends Controller
                     $json['questions'][$i]['questionAttrCopys'][$j]['id'],
                     $questionCopyId,
                     $json['questions'][$i]['questionAttrCopys'][$j]['name'],
-                    $json['questions'][$i]['questionAttrCopys'][$j]['type']
+                    $json['questions'][$i]['questionAttrCopys'][$j]['type'],
+                    $questionAttrCopys_result
                 );
                 //                var_dump($k);exit;
                 $result[$json['questions'][$i]['id']][$json['questions'][$i]['questionAttrCopys'][$j]['id']] = []; //记录当前选项
